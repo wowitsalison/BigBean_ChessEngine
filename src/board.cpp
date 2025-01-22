@@ -6,8 +6,8 @@ void Board::initialize() {
     rooks = 0x8100000000000081ULL;
     knights = 0x4200000000000042ULL;
     bishops = 0x2400000000000024ULL;
-    queens = 0x0800000000000008ULL;
-    kings = 0x1000000000000010ULL;
+    queens = 0x1000000000000010ULL;
+    kings = 0x0800000000000008ULL;
 
     whitePieces = 0x000000000000FFFFULL;
     blackPieces = 0xFFFF000000000000ULL;
