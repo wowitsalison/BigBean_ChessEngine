@@ -1,9 +1,11 @@
 #pragma once
+#include <cstdint>
 
 struct Board {
-    char squares[8][8]; // Placeholder for board representation
+public:
+    uint64_t pawns, rooks, knights, bishops, queens, kings;
+    uint64_t whitePieces, blackPieces, allPieces;
 
-    Board(); // Constructor
-    void initialize(); // Set up the initial position
-    void display() const; // Display the board
+    void initialize();
+    void print() const;
 };
