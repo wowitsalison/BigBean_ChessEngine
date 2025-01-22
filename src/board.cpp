@@ -1,39 +1,30 @@
 #include "board.h"
 #include <iostream>
-using namespace std;
 
-// Initialize empty board
-Board::Board() {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            squares[i][j] = ' ';
-        }
-    }
-}
-
-// Place pieces on board
 void Board::initialize() {
-    // Place pawns
-    for (int i = 0; i < 8; i++) {
-        squares[1][i] = 'P';
-        squares[6][i] = 'p';
-    }
+    pawns = 0x00FF00000000FF00ULL;
+    rooks = 0x8100000000000081ULL;
+    knights = 0x4200000000000042ULL;
+    bishops = 0x2400000000000024ULL;
+    queens = 0x0800000000000008ULL;
+    kings = 0x1000000000000010ULL;
 
-    // Place major pieces
-    const char white_pieces[] = {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'};
-    const char black_pieces[] = {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
-    for (int i = 0; i < 8; i++) {
-        squares[0][i] = white_pieces[i];
-        squares[7][i] = black_pieces[i];
-    }
+    whitePieces = 0x000000000000FFFFULL;
+    blackPieces = 0xFFFF000000000000ULL;
+    allPieces = whitePieces | blackPieces;
 }
 
-// Display the board
-void Board::display() const {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout << squares[i][j] << ' ';
-        }
-        cout << endl;
+// Print board in human-readable format
+void Board::print() const {
+    for (int i = 63; i >= 0; i--) {
+        if (pawns & (1ULL << i)) std::cout << "P ";
+        else if (rooks & (1ULL << i)) std::cout << "R ";
+        else if (knights & (1ULL << i)) std::cout << "N ";
+        else if (bishops & (1ULL << i)) std::cout << "B ";
+        else if (queens & (1ULL << i)) std::cout << "Q ";
+        else if (kings & (1ULL << i)) std::cout << "K ";
+        else std::cout << ". ";
+        if (i % 8 == 0) std::cout << "\n";
     }
+    std::cout << std::endl;
 }
