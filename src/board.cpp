@@ -8,9 +8,8 @@ void Board::initialize() {
     rooks = 0x8100000000000081ULL;
     knights = 0x4200000000000042ULL;
     bishops = 0x2400000000000024ULL;
-    queens = 0x1000000000000010ULL;
-    kings = 0x0800000000000008ULL;
-
+    queens = 0x0800000000000008ULL;
+    kings = 0x1000000000000010ULL;
     whitePieces = 0x000000000000FFFFULL;
     blackPieces = 0xFFFF000000000000ULL;
     allPieces = whitePieces | blackPieces;
@@ -39,4 +38,5 @@ char Board::getPiece(int square) const {
     if (rooks & (1ULL << square)) return 'R';
     if (queens & (1ULL << square)) return 'Q';
     if (kings & (1ULL << square)) return 'K';
+    return '?';
 }
