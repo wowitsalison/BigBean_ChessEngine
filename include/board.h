@@ -8,6 +8,7 @@ public:
 
     void initialize();
     void print() const;
+    char getPiece(int square) const;
 };
 
 // Board masks
