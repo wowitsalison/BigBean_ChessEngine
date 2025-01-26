@@ -2,6 +2,7 @@
 #include "board.h"
 #include "movegen.h"
 
+// Initialize board with starting position
 void Board::initialize() {
     pawns = 0x00FF00000000FF00ULL;
     rooks = 0x8100000000000081ULL;

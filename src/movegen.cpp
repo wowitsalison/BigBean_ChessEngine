@@ -1,5 +1,6 @@
 #include "movegen.h"
 
+// Move pawn one square forward
 uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isWhite) {
     if (isWhite) {
         return (pawns << 8) & empty_squares;
@@ -8,6 +9,7 @@ uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isW
     }
 }
 
+// Move pawn two squares forward from starting rank
 uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isWhite) {
     if (isWhite) {
         uint64_t singlePush = generatePawnSinglePush(pawns, empty_squares, true);
@@ -18,6 +20,7 @@ uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isW
     }
 }
 
+// Capture piece with pawn diagonally
 uint64_t generatePawnCaptures(uint64_t pawns, uint64_t enemy_peices, bool isWhite) {
     if (isWhite) {
         uint64_t leftCapture = (pawns << 7) & ~FILE_A & enemy_peices;
