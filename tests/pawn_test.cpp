@@ -8,27 +8,25 @@ void testInitialPawnMoves() {
     board.initialize();
 
     // White pawn single push
-    uint64_t whiteSinglePush = generatePawnSinglePush(board.pawns & board.whitePieces, 
-                                                      ~board.allPieces, true);
+    uint64_t whiteSinglePush = generatePawnSinglePush(board.pawns & board.whitePieces, ~board.allPieces, true);
+    std::cout << "Actual white single push: 0x" << std::hex << whiteSinglePush << std::endl;
     assert(whiteSinglePush == 0x0000000000FF0000ULL && "White initial single push incorrect");
 
     // Black pawn single push
-    uint64_t blackSinglePush = generatePawnSinglePush(board.pawns & board.blackPieces, 
-                                                      ~board.allPieces, false);
-    assert(blackSinglePush == 0x000000FF00000000ULL && "Black initial single push incorrect");
+    uint64_t blackSinglePush = generatePawnSinglePush(board.pawns & board.blackPieces, ~board.allPieces, false);
+    std::cout << "Actual black single push: 0x" << std::hex << blackSinglePush << std::endl;
+    assert(blackSinglePush == 0x0000FF0000000000ULL && "Black initial single push incorrect");
 
     // White pawn double push
-    uint64_t whiteDoublePush = generatePawnDoublePush(board.pawns & board.whitePieces, 
-                                                      ~board.allPieces, true);
-    assert(whiteDoublePush == 0x0000000000FF0000ULL && "White initial double push incorrect");
+    uint64_t whiteDoublePush = generatePawnDoublePush(board.pawns & board.whitePieces, ~board.allPieces, true);
+    std::cout << "Actual white double push: 0x" << std::hex << whiteDoublePush << std::endl;
+    assert(whiteDoublePush == 0x00000000FF000000ULL && "White initial double push incorrect");
 
     // Black pawn double push
-    uint64_t blackDoublePush = generatePawnDoublePush(board.pawns & board.blackPieces, 
-                                                      ~board.allPieces, false);
+    uint64_t blackDoublePush = generatePawnDoublePush(board.pawns & board.blackPieces, ~board.allPieces, false);
+    std::cout << "Actual black double push: 0x" << std::hex << blackDoublePush << std::endl;
     assert(blackDoublePush == 0x000000FF00000000ULL && "Black initial double push incorrect");
-
-    std::cout << "Initial pawn moves test passed!" << std::endl;
-}
+    }
 
 void testPawnCaptureBlocking() {
     Board board;
