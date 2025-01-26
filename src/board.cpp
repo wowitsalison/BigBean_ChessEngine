@@ -1,5 +1,6 @@
-#include "board.h"
 #include <iostream>
+#include "board.h"
+#include "movegen.h"
 
 void Board::initialize() {
     pawns = 0x00FF00000000FF00ULL;
@@ -27,4 +28,14 @@ void Board::print() const {
         if (i % 8 == 0) std::cout << "\n";
     }
     std::cout << std::endl;
+}
+
+// Get any piece at its square
+char Board::getPiece(int square) const {
+    if (pawns & (1ULL << square)) return 'P';
+    if (bishops & (1ULL << square )) return 'B';
+    if (knights & (1ULL << square)) return 'N';
+    if (rooks & (1ULL << square)) return 'R';
+    if (queens & (1ULL << square)) return 'Q';
+    if (kings & (1ULL << square)) return 'K';
 }
