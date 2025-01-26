@@ -4,20 +4,20 @@
 
 // Initialize board with starting position
 void Board::initialize() {
-    pawns = 0x00FF00000000FF00ULL;
-    rooks = 0x8100000000000081ULL;
-    knights = 0x4200000000000042ULL;
-    bishops = 0x2400000000000024ULL;
-    queens = 0x0800000000000008ULL;
-    kings = 0x1000000000000010ULL;
-    whitePieces = 0x000000000000FFFFULL;
-    blackPieces = 0xFFFF000000000000ULL;
+    pawns = RANK_2 | RANK_7;
+    rooks = (FILE_A | FILE_H) & (RANK_1 | RANK_8);
+    knights = (FILE_B | FILE_G) & (RANK_1 | RANK_8);
+    bishops = (FILE_C | FILE_F) & (RANK_1 | RANK_8);
+    queens = FILE_D & (RANK_1 | RANK_8);
+    kings = FILE_E & (RANK_1 | RANK_8);
+    whitePieces = RANK_1;
+    blackPieces = RANK_8;
     allPieces = whitePieces | blackPieces;
 }
 
 // Print board in human-readable format
 void Board::print() const {
-    for (int i = 63; i >= 0; i--) {
+    for (int i = 0; i < 64; i++) {
         if (pawns & (1ULL << i)) std::cout << "P ";
         else if (rooks & (1ULL << i)) std::cout << "R ";
         else if (knights & (1ULL << i)) std::cout << "N ";
@@ -25,7 +25,7 @@ void Board::print() const {
         else if (queens & (1ULL << i)) std::cout << "Q ";
         else if (kings & (1ULL << i)) std::cout << "K ";
         else std::cout << ". ";
-        if (i % 8 == 0) std::cout << "\n";
+        if ((i + 1) % 8 == 0) std::cout << "\n";
     }
     std::cout << std::endl;
 }
