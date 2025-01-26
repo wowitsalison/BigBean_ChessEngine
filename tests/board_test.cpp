@@ -18,21 +18,23 @@ void testBoardInitialization() {
 
     // Check initial positions of knights
     assert(board.getPiece(1) == 'N' && "Knight not initialized correctly at square 1");
-    assert(board.getPiece(6) == 'N' && "Knight not initialized correctly at square 1");
-    assert(board.getPiece(62) == 'N' && "Knight not initialized correctly at square 1");
+    assert(board.getPiece(6) == 'N' && "Knight not initialized correctly at square 6");
+    assert(board.getPiece(62) == 'N' && "Knight not initialized correctly at square 62");
     assert(board.getPiece(57) == 'N' && "Knight not initialized correctly at square 57");
 
     // Check initial positions of bishops
     assert(board.getPiece(2) == 'B' && "Bishop not initialized correctly at square 2");
+    assert(board.getPiece(5) == 'B' && "Bishop not initialized correctly at square 5");
+    assert(board.getPiece(61) == 'B' && "Bishop not initialized correctly at square 61");
     assert(board.getPiece(58) == 'B' && "Bishop not initialized correctly at square 58");
 
     // Check initial positions of queens
-    assert(board.getPiece(4) == 'Q' && "Queen not initialized correctly at square 3");
-    assert(board.getPiece(60) == 'Q' && "Queen not initialized correctly at square 59");
+    assert(board.getPiece(3) == 'Q' && "Queen not initialized correctly at square 3");
+    assert(board.getPiece(59) == 'Q' && "Queen not initialized correctly at square 59");
 
     // Check initial positions of kings
-    assert(board.getPiece(3) == 'K' && "King not initialized correctly at square 4");
-    assert(board.getPiece(59) == 'K' && "King not initialized correctly at square 60");
+    assert(board.getPiece(4) == 'K' && "King not initialized correctly at square 4");
+    assert(board.getPiece(60) == 'K' && "King not initialized correctly at square 60");
 
     std::cout << "Board initialization test passed!" << std::endl;
 }
