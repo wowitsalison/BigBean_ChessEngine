@@ -2,6 +2,16 @@
 #include "board.h"
 #include <cstdint>
 
+// Direction constants for sliding pieces
+const int NORTH = -8;
+const int SOUTH = 8;
+const int EAST = 1;
+const int WEST = -1;
+const int NORTHEAST = -7;
+const int SOUTHEAST = 9;
+const int SOUTHWEST = 7;
+const int NORTHWEST = -9;
+
 // Pawn moves
 uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isWhite);
 uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isWhite);
