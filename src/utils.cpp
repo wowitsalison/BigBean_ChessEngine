@@ -24,7 +24,7 @@ int algebraicToSquare(const std::string& algebraic) {
 
 std::string squareToAlgebraic(int square) {
     char file = 'a' + (square % 8);
-    char rank = '1' + (square / 8);
+    char rank = '1' + (7 - (square / 8));
     return std::string(1, file) + rank;
 }
 
