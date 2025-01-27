@@ -35,4 +35,4 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
 // Queen moves
 uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t enemy_pieces);
 // King moves
-uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enemy_pieces);
+uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enemy_pieces, uint64_t enemy_attacks);
