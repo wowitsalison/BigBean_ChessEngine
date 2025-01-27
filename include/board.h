@@ -8,9 +8,13 @@ struct Move {
     bool isCastling;
     bool isEnPassant;
     char promotionPiece;
+    uint8_t previousCastlingRights;
+    int previousEnPassantSquare;
 
     Move(char p, int src, int dest, bool castling = false, bool enPassant = false, char promo = '\0')
-        : piece(p), sourceSquare(src), destinationSquare(dest), isCastling(castling), isEnPassant(enPassant), promotionPiece(promo) {}
+        : piece(p), sourceSquare(src), destinationSquare(dest), 
+          isCastling(castling), isEnPassant(enPassant), promotionPiece(promo),
+          previousCastlingRights(0), previousEnPassantSquare(-1) {}
 };
 
 struct Board {
