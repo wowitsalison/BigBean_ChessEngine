@@ -1,5 +1,7 @@
 #include "utils.h"
 #include <stdexcept>
+#include <iostream>
+#include <string>
 
 int algebraicToSquare(const std::string& algebraic) {
     // Check for valid algebraic notation
@@ -18,4 +20,19 @@ int algebraicToSquare(const std::string& algebraic) {
     int rankInt = rank - '1';
 
     return rankInt * 8 + fileInt;
+}
+
+std::string squareToAlgebraic(int square) {
+    char file = 'a' + (square % 8);
+    char rank = '1' + (square / 8);
+    return std::string(1, file) + rank;
+}
+
+void logMoves(uint64_t board) {
+    for (int i = 0; i < 64; i++) {
+        if (board & (1ULL << i)) {
+            std::cout << squareToAlgebraic(i) << " ";
+        }
+    }
+    std::cout << std::endl;
 }

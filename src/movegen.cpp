@@ -1,4 +1,5 @@
 #include "movegen.h"
+#include "utils.h"
 
 // Move pawn one square forward
 uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isWhite) {
@@ -77,6 +78,8 @@ uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t 
             }
         }
     }
+
+    logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -113,6 +116,7 @@ uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t 
             }
         }
     }
+    logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -160,6 +164,7 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
             }
         }
     }
+    logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -207,6 +212,7 @@ uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t en
             }
         }
     }
+    logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -239,5 +245,6 @@ uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enem
             }
         }
     }
+    logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
