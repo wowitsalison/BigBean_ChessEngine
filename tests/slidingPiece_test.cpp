@@ -46,7 +46,7 @@ void testBishopMoves() {
     assert(moves == expectedMoves && "Corner bishop moves incorrect");
 
     // Test edge cases
-    bishop = 1ULL << 63; // Bishop on h8
+    bishop = 1ULL << 63; // Bishop on h1
     moves = generateBishopMoves(bishop, ~0ULL, 0);
     expectedMoves = 0x0040201008040201ULL;
     assert(moves == expectedMoves && "Edge bishop test failed");
