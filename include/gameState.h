@@ -15,4 +15,14 @@ struct GameState {
     Board board;
 
     GameState() : sideToMove(WHITE), castlingRights(NO_CASTLING), enPassantSquare(-1) {}
+
+    void initialize();
+    void makeMove(const std::string& move);
+    void undoMove();
+
+private:
+    void updateCastlingRights(const std::string& move);
+    void updateEnPassantSquare(const std::string& move);
+    void updateCastlingRightsUndo(const std::string& move);
+    void updateEnPassantSquareUndo(const std::string& move);
 };
