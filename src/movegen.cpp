@@ -233,7 +233,7 @@ uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enem
                 piece = (dir > 0) ? (piece << dir) : (piece >> -dir);
                 
                 // Add move if valid
-                if (piece && (piece & availableSquares) & !(piece & enemy_attacks)) {
+                if (piece && (piece & availableSquares) && !(piece & enemy_attacks)) {
                     moves |= piece;
                 }
             }
