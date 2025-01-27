@@ -88,7 +88,46 @@ uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t 
 uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enemy_pieces) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
+    const int ROOK_DIRS[] = {NORTH, SOUTH, EAST, WEST};
 
+    for (int square = 0; square < 64; square++) {
+        if (rooks & (1ULL << square)) {
+            for (int dir : ROOK_DIRS) {
+                uint64_t piece = 1ULL << square;
+
+                // Check if current position is on edge before moving
+                if ((piece & FILE_A && dir == WEST) ||
+                    (piece & FILE_H && dir == EAST) ||
+                    (piece & RANK_1 && dir == NORTH) ||
+                    (piece & RANK_8 && dir == SOUTH)) {
+                    continue;
+                }
+
+                while (true) {
+                    if (dir > 0) {
+                        piece <<= dir;
+                    } else {
+                        piece >>= -dir;
+                    }
+
+                    if (piece == 0) break;
+
+                    if (piece & availableSquares) {
+                        moves |= piece;
+                        if (piece & enemy_pieces) break;
+                    } else break;
+
+                    // Check edges after move is added
+                    if ((piece & FILE_A && dir == WEST) ||
+                        (piece & FILE_H && dir == EAST) ||
+                        (piece & RANK_1 && dir == NORTH) ||
+                        (piece & RANK_8 && dir == SOUTH)) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
     return moves;
 }
 
