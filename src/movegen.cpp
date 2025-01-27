@@ -75,3 +75,35 @@ uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t 
     }
     return moves;
 }
+
+// Move knight in L-shape
+uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t enemy_pieces) {
+    uint64_t moves = 0;
+    uint64_t availableSquares = empty_squares | enemy_pieces;
+
+    return moves;
+}
+
+// Move rook horizontally or vertically
+uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enemy_pieces) {
+    uint64_t moves = 0;
+    uint64_t availableSquares = empty_squares | enemy_pieces;
+
+    return moves;
+}
+
+// Move queen horizontally, vertically, or diagonally
+uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t enemy_pieces) {
+    uint64_t moves = 0;
+    uint64_t availableSquares = empty_squares | enemy_pieces;
+
+    return moves;
+}
+
+// Move king one square in any direction
+uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enemy_pieces) {
+    uint64_t moves = 0;
+    uint64_t availableSquares = empty_squares | enemy_pieces;
+
+    return moves;
+}
