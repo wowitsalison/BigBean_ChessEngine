@@ -15,6 +15,76 @@ void Board::initialize() {
     allPieces = whitePieces | blackPieces;
 }
 
+// Update the board by making a move
+void Board::makeMove(const Move& move) {
+    uint64_t sourceMask = 1ULL << move.sourceSquare;
+    uint64_t destMask = 1ULL << move.destinationSquare;
+
+    // Remove piece from source square
+    if (move.piece == 'P') pawns &= ~sourceMask;
+    else if (move.piece == 'R') rooks &= ~sourceMask;
+    else if (move.piece == 'N') knights &= ~sourceMask;
+    else if (move.piece == 'B') bishops &= ~sourceMask;
+    else if (move.piece == 'Q') queens &= ~sourceMask;
+    else if (move.piece == 'K') kings &= ~sourceMask;
+
+    // Place piece on destination square
+    if (move.piece == 'P') pawns |= destMask;
+    else if (move.piece == 'R') rooks |= destMask;
+    else if (move.piece == 'N') knights |= destMask;
+    else if (move.piece == 'B') bishops |= destMask;
+    else if (move.piece == 'Q') queens |= destMask;
+    else if (move.piece == 'K') kings |= destMask;
+
+    // Handle special moves (castling, en passant, promotion)
+    if (move.isCastling) {
+        // Implement castling logic here
+    }
+    if (move.isEnPassant) {
+        // Implement en passant logic here
+    }
+    if (move.promotionPiece != '\0') {
+        // Implement promotion logic here
+    }
+
+    // Update piece bitboards
+    whitePieces = pawns | rooks | knights | bishops | queens | kings;
+    blackPieces = pawns | rooks | knights | bishops | queens | kings;
+    allPieces = whitePieces | blackPieces;
+}
+
+void Board::undoMove(const Move& move) {
+    uint64_t sourceMask = 1ULL << move.sourceSquare;
+    uint64_t destMask = 1ULL << move.destinationSquare;
+
+    // Remove piece from destination square
+    if (move.piece == 'P') pawns &= ~destMask;
+    else if (move.piece == 'R') rooks &= ~destMask;
+    else if (move.piece == 'N') knights &= ~destMask;
+    else if (move.piece == 'B') bishops &= ~destMask;
+    else if (move.piece == 'Q') queens &= ~destMask;
+    else if (move.piece == 'K') kings &= ~destMask;
+
+    // Place piece back on source square
+    if (move.piece == 'P') pawns |= sourceMask;
+    else if (move.piece == 'R') rooks |= sourceMask;
+    else if (move.piece == 'N') knights |= sourceMask;
+    else if (move.piece == 'B') bishops |= sourceMask;
+    else if (move.piece == 'Q') queens |= sourceMask;
+    else if (move.piece == 'K') kings |= sourceMask;
+
+    // Handle special moves (castling, en passant, promotion)
+    if (move.isCastling) {
+        // Implement castling undo logic here
+    }
+    if (move.isEnPassant) {
+        // Implement en passant undo logic here
+    }
+    if (move.promotionPiece != '\0') {
+        // Implement promotion undo logic here
+    }
+}
+
 // Print board in human-readable format
 void Board::print() const {
     for (int i = 0; i < 64; i++) {
