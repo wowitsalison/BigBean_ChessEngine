@@ -84,7 +84,7 @@ void testKingMoves() {
     king = 1ULL << 6; // knight on g8
     moves = generateKingMoves(king, ~0ULL, 0, 0);
     expectedMoves = 0x000000000000e0a0ULL;
-    assert(moves == expectedMoves && "Edge knight test failed");
+    assert(moves == expectedMoves && "Edge king test failed");
 
     // Test king safety
     king = 1ULL << 35; // King on d4
@@ -95,10 +95,10 @@ void testKingMoves() {
     moves = generateKingMoves(king, empty, enemy, enemy_attacks);
     assert(moves == expectedMoves && "King safety test failed");
 
-    std::cout << "All knight move tests passed!" << std::endl;
+    std::cout << "All king move tests passed!" << std::endl;
 }
 
 int main() {
-    testKnightMoves();
+    testKingMoves();
     return 0;
 }
