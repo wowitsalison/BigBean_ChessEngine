@@ -214,6 +214,30 @@ uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t en
 uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enemy_pieces) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
+    const int KING_DIRS[] = {NORTH, SOUTH, EAST, WEST, NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
+    
+    for (int square = 0; square < 64; square++) {
+        if (kings & (1ULL << square)) {
+            for (int dir : KING_DIRS) {
+                uint64_t piece = 1ULL << square;
 
+                // Check if current position is on edge before moving
+                if ((piece & FILE_A && (dir == NORTHWEST || dir == WEST || dir == SOUTHWEST)) ||
+                    (piece & FILE_H && (dir == NORTHEAST || dir == EAST || dir == SOUTHEAST)) ||
+                    (piece & RANK_1 && (dir == SOUTH || dir == SOUTHWEST || dir == SOUTHEAST)) ||
+                    (piece & RANK_8 && (dir == NORTH || dir == NORTHWEST || dir == NORTHEAST))) {
+                    continue;
+                }
+
+                // Make single king move
+                piece = (dir > 0) ? (piece << dir) : (piece >> -dir);
+                
+                // Add move if valid
+                if (piece && (piece & availableSquares)) {
+                    moves |= piece;
+                }
+            }
+        }
+    }
     return moves;
 }
