@@ -54,7 +54,45 @@ void testBishopMoves() {
     std::cout << "All bishop move tests passed!" << std::endl;
 }
 
+void testRookMoves() {
+    // Test center rook moves on empty board (d4 = square 35)
+    uint64_t rook = 1ULL << 35;
+    uint64_t empty = ~0ULL;
+    uint64_t expectedMoves = 0x080808f708080808ULL;
+    uint64_t moves = generateRookMoves(rook, empty, 0);
+    assert(moves == expectedMoves && "Center rook moves incorrect");
+
+    // Test rook blocked by friendly pieces
+    uint64_t friendly = 1ULL << 27; // Friendly piece on d5
+    empty = ~friendly;
+    expectedMoves = 0x080808f700000000ULL;
+    moves = generateRookMoves(rook, empty, 0);
+    assert(moves == expectedMoves && "Rook blocked by friendly piece test failed");
+
+    // Test rook captures
+    uint64_t enemy = 1ULL << 36; // Enemy piece on e4
+    empty = ~(rook | enemy);
+    expectedMoves = 0x0808081708080808ULL;
+    moves = generateRookMoves(rook, empty, enemy);
+    assert(moves == expectedMoves && "Rook capture test failed");
+
+    // Test corner rook
+    rook = 1ULL << 56; // Rook on a1
+    empty = ~0ULL;
+    expectedMoves = 0xfe01010101010101ULL;
+    moves = generateRookMoves(rook, empty, 0);
+    assert(moves == expectedMoves && "Corner rook moves incorrect");
+
+    // Test edge cases
+    rook = 1ULL << 5; // Rook on f8
+    moves = generateRookMoves(rook, ~0ULL, 0);
+    expectedMoves = 0x20202020202020dfULL;
+    assert(moves == expectedMoves && "Edge rook test failed");
+
+    std::cout << "All rook move tests passed!" << std::endl;
+}
+
 int main() {
-    testBishopMoves();
+    testRookMoves();
     return 0;
 }
