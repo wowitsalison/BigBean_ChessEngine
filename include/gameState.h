@@ -5,24 +5,24 @@
 #include "board.h"
 
 enum Side { WHITE, BLACK };
-enum castlingRights { NO_CASTLING, WHITE_KINGSIDE, WHITE_QUEENSIDE, BLACK_KINGSIDE, BLACK_QUEENSIDE };
+enum CastlingRights { NO_CASTLING = 0, WHITE_KINGSIDE = 1, WHITE_QUEENSIDE = 2, BLACK_KINGSIDE = 4, BLACK_QUEENSIDE = 8 };
 
 struct GameState {
     Side sideToMove;
     uint8_t castlingRights;
     int enPassantSquare;
-    std::vector<std::string> moveHistory;
+    std::vector<Move> moveHistory;
     Board board;
 
     GameState() : sideToMove(WHITE), castlingRights(NO_CASTLING), enPassantSquare(-1) {}
 
     void initialize();
-    void makeMove(const std::string& move);
+    void makeMove(const Move& move);
     void undoMove();
 
 private:
-    void updateCastlingRights(const std::string& move);
-    void updateEnPassantSquare(const std::string& move);
-    void updateCastlingRightsUndo(const std::string& move);
-    void updateEnPassantSquareUndo(const std::string& move);
+    void updateCastlingRights(const Move& move);
+    void updateEnPassantSquare(const Move& move);
+    void updateCastlingRightsUndo(const Move& move);
+    void updateEnPassantSquareUndo(const Move& move);
 };

@@ -1,6 +1,18 @@
 #pragma once
 #include <cstdint>
 
+struct Move {
+    char piece;
+    int sourceSquare;
+    int destinationSquare;
+    bool isCastling;
+    bool isEnPassant;
+    char promotionPiece;
+
+    Move(char p, int src, int dest, bool castling = false, bool enPassant = false, char promo = '\0')
+        : piece(p), sourceSquare(src), destinationSquare(dest), isCastling(castling), isEnPassant(enPassant), promotionPiece(promo) {}
+};
+
 struct Board {
 public:
     uint64_t pawns, rooks, knights, bishops, queens, kings;
@@ -9,6 +21,8 @@ public:
     void initialize();
     void print() const;
     char getPiece(int square) const;
+    void makeMove(const Move& move);
+    void undoMove(const Move& move);
 };
 
 // Board masks
