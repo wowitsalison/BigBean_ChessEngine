@@ -211,7 +211,7 @@ uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t en
 }
 
 // Move king one square in any direction
-uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enemy_pieces) {
+uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enemy_pieces, uint64_t enemy_attacks) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
     const int KING_DIRS[] = {NORTH, SOUTH, EAST, WEST, NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
@@ -233,7 +233,7 @@ uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enem
                 piece = (dir > 0) ? (piece << dir) : (piece >> -dir);
                 
                 // Add move if valid
-                if (piece && (piece & availableSquares)) {
+                if (piece && (piece & availableSquares) & !(piece & enemy_attacks)) {
                     moves |= piece;
                 }
             }
