@@ -19,6 +19,7 @@ set(SOURCES
 set(TEST_SOURCES
     tests/pawn_test.cpp
     tests/slidingPiece_test.cpp
+    tests/specialPiece_test.cpp
     src/board.cpp
     src/movegen.cpp
 )
