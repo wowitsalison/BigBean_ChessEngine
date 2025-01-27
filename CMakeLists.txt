@@ -13,6 +13,7 @@ set(SOURCES
     src/board.cpp
     src/movegen.cpp
     src/utils.cpp
+    src/gameState
 )
 
 # Add the test files
