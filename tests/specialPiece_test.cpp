@@ -67,9 +67,9 @@ void testKingMoves() {
 
     // Test king captures
     uint64_t enemy = 1ULL << 20; // Enemy piece on e5
-    uint64_t enemy_attacks = 0x00001c141c000000ULL;
+    uint64_t enemy_attacks = 0x0000003828380000ULL;
     empty = ~(king | enemy);
-    expectedMoves = 0x0014220022140000ULL;
+    expectedMoves = 0x00001c0414000000ULL;
     moves = generateKingMoves(king, empty, enemy, enemy_attacks);
     assert(moves == expectedMoves && "King capture test failed");
 
