@@ -12,6 +12,16 @@ const int SOUTHEAST = 9;
 const int SOUTHWEST = 7;
 const int NORTHWEST = -9;
 
+// Direction constants for knight moves
+const int NORTHEAST_L = -15; // Two squares north, one square east
+const int EASTNORTH_L = -6; // Two squares east, one square north
+const int EASTSOUTH_L = 10; // Two squares east, one square south
+const int SOUTHEAST_L = 17;
+const int SOUTHWEST_L = 15;
+const int WESTSOUTH_L = 6;
+const int WESTNORTH_L = -10;
+const int NORTHWEST_L = -17;
+
 // Pawn moves
 uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isWhite);
 uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isWhite);
