@@ -36,20 +36,39 @@ uint64_t generatePawnCaptures(uint64_t pawns, uint64_t enemy_peices, bool isWhit
 // Move Bishop diagonally
 uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t enemy_pieces) {
     uint64_t moves = 0;
+    uint64_t availableSquares = empty_squares | enemy_pieces;
     const int BISHOP_DIRS[] = {NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
-    uint64_t availableSquares = empty_squares | enemy_pieces; // All squares that aren't occupied by own pieces
 
     for (int square = 0; square < 64; square++) {
-        if (bishops & (1ULL << square)) { // Check if the piece is a bishop
-            for (int dir : BISHOP_DIRS) { // Iterate over all directions
+        if (bishops & (1ULL << square)) {
+            for (int dir : BISHOP_DIRS) {
                 uint64_t piece = 1ULL << square;
-                // Move bishop in one direction until edge of board or blocked by own piece
-                while (piece && !((dir > 0 ? piece & FILE_H : piece & FILE_A) && dir % 8 != 0)) {
-                    piece = (dir > 0) ? (piece << dir) : (piece >> -dir); 
-                    if (piece & availableSquares) { 
-                        moves |= piece; // Add move to possible moves
-                        if (piece & enemy_pieces) break; // Stop after capturing
+                
+                // Check if current position is on edge before moving
+                if ((piece & FILE_A && (dir == NORTHWEST || dir == SOUTHWEST)) ||
+                    (piece & FILE_H && (dir == NORTHEAST || dir == SOUTHEAST))) {
+                    continue;
+                }
+
+                while (true) {
+                    if (dir > 0) {
+                        piece <<= dir;
+                    } else {
+                        piece >>= -dir;
+                    }
+
+                    if (piece == 0) break;
+
+                    if (piece & availableSquares) {
+                        moves |= piece;
+                        if (piece & enemy_pieces) break;
                     } else break;
+
+                    // Check edges after move is added
+                    if ((piece & FILE_A && (dir == NORTHWEST || dir == SOUTHWEST)) ||
+                        (piece & FILE_H && (dir == NORTHEAST || dir == SOUTHEAST))) {
+                        break;
+                    }
                 }
             }
         }
