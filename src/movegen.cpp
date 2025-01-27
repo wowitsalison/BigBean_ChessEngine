@@ -93,8 +93,12 @@ uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t 
                 
                 // Check if current position is on edge before moving
                 if ((piece & FILE_A && (dir == NORTHWEST_L || dir == WESTNORTH_L || dir == WESTSOUTH_L || dir == SOUTHWEST_L)) ||
+                    (piece & FILE_B && (dir == WESTNORTH_L || dir == WESTSOUTH_L)) ||
+                    (piece & FILE_G && (dir == EASTNORTH_L || dir == EASTSOUTH_L)) ||
                     (piece & FILE_H && (dir == NORTHEAST_L || dir == EASTNORTH_L || dir == EASTSOUTH_L || dir == SOUTHEAST_L)) ||
                     (piece & RANK_1 && (dir == SOUTHWEST_L || dir == SOUTHEAST_L || dir == WESTSOUTH_L || dir == EASTSOUTH_L)) ||
+                    (piece & RANK_2 && (dir == WESTNORTH_L || dir == EASTNORTH_L)) ||
+                    (piece & RANK_7 && (dir == WESTSOUTH_L || dir == EASTSOUTH_L)) ||
                     (piece & RANK_8 && (dir == NORTHWEST_L || dir == NORTHEAST_L || dir == WESTNORTH_L || dir == EASTNORTH_L))) {
                     continue;
                 }
