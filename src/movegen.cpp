@@ -99,27 +99,12 @@ uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t 
                     continue;
                 }
 
-                while (true) {
-                    if (dir > 0) {
-                        piece <<= dir;
-                    } else {
-                        piece >>= -dir;
-                    }
-
-                    if (piece == 0) break;
-
-                    if (piece & availableSquares) {
-                        moves |= piece;
-                        if (piece & enemy_pieces) break;
-                    } else break;
-
-                    // Check edges after move is added
-                    if ((piece & FILE_A && (dir == NORTHWEST_L || dir == WESTNORTH_L || dir == WESTSOUTH_L || dir == SOUTHWEST_L)) ||
-                        (piece & FILE_H && (dir == NORTHEAST_L || dir == EASTNORTH_L || dir == EASTSOUTH_L || dir == SOUTHEAST_L)) ||
-                        (piece & RANK_1 && (dir == NORTHWEST_L || dir == NORTHEAST_L || dir == WESTNORTH_L || dir == EASTNORTH_L)) ||
-                        (piece & RANK_8 && (dir == SOUTHWEST_L || dir == SOUTHEAST_L || dir == WESTSOUTH_L || dir == EASTSOUTH_L))) {
-                        break;
-                    }
+                // Make single knight move
+                piece = (dir > 0) ? (piece << dir) : (piece >> -dir);
+                
+                // Add move if valid
+                if (piece && (piece & availableSquares)) {
+                    moves |= piece;
                 }
             }
         }
