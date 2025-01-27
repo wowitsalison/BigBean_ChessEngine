@@ -175,6 +175,7 @@ uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t en
             }
         }
     }
+    return moves;
 }
 
 // Move king one square in any direction
