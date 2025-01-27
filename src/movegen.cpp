@@ -46,7 +46,9 @@ uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t 
                 
                 // Check if current position is on edge before moving
                 if ((piece & FILE_A && (dir == NORTHWEST || dir == SOUTHWEST)) ||
-                    (piece & FILE_H && (dir == NORTHEAST || dir == SOUTHEAST))) {
+                    (piece & FILE_H && (dir == NORTHEAST || dir == SOUTHEAST)) ||
+                    (piece & RANK_1 && (dir == SOUTHWEST || dir == SOUTHEAST)) ||
+                    (piece & RANK_8 && (dir == NORTHWEST || dir == NORTHEAST))) {
                     continue;
                 }
 
@@ -66,7 +68,9 @@ uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t 
 
                     // Check edges after move is added
                     if ((piece & FILE_A && (dir == NORTHWEST || dir == SOUTHWEST)) ||
-                        (piece & FILE_H && (dir == NORTHEAST || dir == SOUTHEAST))) {
+                        (piece & FILE_H && (dir == NORTHEAST || dir == SOUTHEAST)) ||
+                        (piece & RANK_1 && (dir == NORTHWEST || dir == NORTHEAST)) ||
+                        (piece & RANK_8 && (dir == SOUTHWEST || dir == SOUTHEAST))) {
                         break;
                     }
                 }
@@ -80,7 +84,46 @@ uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t 
 uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t enemy_pieces) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
+    const int KNIGHT_DIRS[] = {NORTHEAST_L, EASTNORTH_L, EASTSOUTH_L, SOUTHEAST_L, SOUTHWEST_L, WESTSOUTH_L, WESTNORTH_L, NORTHWEST_L};
+    
+    for (int square = 0; square < 64; square++) {
+        if (knights & (1ULL << square)) {
+            for (int dir : KNIGHT_DIRS) {
+                uint64_t piece = 1ULL << square;
+                
+                // Check if current position is on edge before moving
+                if ((piece & FILE_A && (dir == NORTHWEST_L || dir == WESTNORTH_L || dir == WESTSOUTH_L || dir == SOUTHWEST_L)) ||
+                    (piece & FILE_H && (dir == NORTHEAST_L || dir == EASTNORTH_L || dir == EASTSOUTH_L || dir == SOUTHEAST_L)) ||
+                    (piece & RANK_1 && (dir == SOUTHWEST_L || dir == SOUTHEAST_L || dir == WESTSOUTH_L || dir == EASTSOUTH_L)) ||
+                    (piece & RANK_8 && (dir == NORTHWEST_L || dir == NORTHEAST_L || dir == WESTNORTH_L || dir == EASTNORTH_L))) {
+                    continue;
+                }
 
+                while (true) {
+                    if (dir > 0) {
+                        piece <<= dir;
+                    } else {
+                        piece >>= -dir;
+                    }
+
+                    if (piece == 0) break;
+
+                    if (piece & availableSquares) {
+                        moves |= piece;
+                        if (piece & enemy_pieces) break;
+                    } else break;
+
+                    // Check edges after move is added
+                    if ((piece & FILE_A && (dir == NORTHWEST_L || dir == WESTNORTH_L || dir == WESTSOUTH_L || dir == SOUTHWEST_L)) ||
+                        (piece & FILE_H && (dir == NORTHEAST_L || dir == EASTNORTH_L || dir == EASTSOUTH_L || dir == SOUTHEAST_L)) ||
+                        (piece & RANK_1 && (dir == NORTHWEST_L || dir == NORTHEAST_L || dir == WESTNORTH_L || dir == EASTNORTH_L)) ||
+                        (piece & RANK_8 && (dir == SOUTHWEST_L || dir == SOUTHEAST_L || dir == WESTSOUTH_L || dir == EASTSOUTH_L))) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
     return moves;
 }
 
@@ -98,8 +141,8 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
                 // Check if current position is on edge before moving
                 if ((piece & FILE_A && dir == WEST) ||
                     (piece & FILE_H && dir == EAST) ||
-                    (piece & RANK_1 && dir == NORTH) ||
-                    (piece & RANK_8 && dir == SOUTH)) {
+                    (piece & RANK_1 && dir == SOUTH) ||
+                    (piece & RANK_8 && dir == NORTH)) {
                     continue;
                 }
 
@@ -120,8 +163,8 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
                     // Check edges after move is added
                     if ((piece & FILE_A && dir == WEST) ||
                         (piece & FILE_H && dir == EAST) ||
-                        (piece & RANK_1 && dir == NORTH) ||
-                        (piece & RANK_8 && dir == SOUTH)) {
+                        (piece & RANK_1 && dir == SOUTH) ||
+                        (piece & RANK_8 && dir == NORTH)) {
                         break;
                     }
                 }
