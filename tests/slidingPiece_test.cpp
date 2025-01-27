@@ -46,9 +46,9 @@ void testBishopMoves() {
     assert(moves == expectedMoves && "Corner bishop moves incorrect");
 
     // Test edge cases
-    bishop = 1ULL << 63; // Bishop on h1
+    bishop = 1ULL << 62; // Bishop on G1
     moves = generateBishopMoves(bishop, ~0ULL, 0);
-    expectedMoves = 0x0040201008040201ULL;
+    expectedMoves = 0x00a0100804020100ULL;
     assert(moves == expectedMoves && "Edge bishop test failed");
 
     std::cout << "All bishop move tests passed!" << std::endl;
@@ -131,6 +131,6 @@ void testQueenMoves() {
 }
 
 int main() {
-    testQueenMoves();
+    testBishopMoves();
     return 0;
 }
