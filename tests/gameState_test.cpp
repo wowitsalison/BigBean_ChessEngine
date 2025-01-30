@@ -2,7 +2,6 @@
 #include <iostream>
 #include "gameState.h"
 #include "board.h"
-#include "movegen.h"
 #include "utils.h"
 
 class ChessTest {
@@ -20,6 +19,7 @@ private:
     
     bool testPawnMove() {
         gs.initialize();
+        gs.board.print();
         
         // Test white pawn single push e2-e3
         Move pawnMove('P', algebraicToSquare("e2"), algebraicToSquare("e3"));
@@ -28,9 +28,11 @@ private:
         
         gs.makeMove(pawnMove);
         
+        gs.board.print();
+
         bool passed = true;
         // Verify board state
-        passed &= (gs.board.getPiece(algebraicToSquare("e2")) == '?'); // Source square empty
+        passed &= (gs.board.getPiece(algebraicToSquare("e2")) == '.'); // Source square empty
         passed &= (gs.board.getPiece(algebraicToSquare("e3")) == 'P'); // Destination has pawn
         passed &= (gs.sideToMove == BLACK); // Side to move changed
         passed &= (gs.enPassantSquare == -1); // No en passant for single push
@@ -38,7 +40,7 @@ private:
         // Test undo
         gs.undoMove();
         passed &= (gs.board.getPiece(algebraicToSquare("e2")) == 'P'); // Pawn back
-        passed &= (gs.board.getPiece(algebraicToSquare("e3")) == '?'); // Square empty again
+        passed &= (gs.board.getPiece(algebraicToSquare("e3")) == '.'); // Square empty again
         passed &= (gs.sideToMove == WHITE);
         
         printTestResult("Pawn Single Push Test", passed);
@@ -54,17 +56,18 @@ private:
         printMove(pawnMove);
         
         gs.makeMove(pawnMove);
-        
+        gs.board.print();
+
         bool passed = true;
         // Verify board state
-        passed &= (gs.board.getPiece(algebraicToSquare("e2")) == '?'); // Source square empty
+        passed &= (gs.board.getPiece(algebraicToSquare("e2")) == '.'); // Source square empty
         passed &= (gs.board.getPiece(algebraicToSquare("e4")) == 'P'); // Destination has pawn
         passed &= (gs.enPassantSquare == algebraicToSquare("e3")); // e3 is en passant square
         
         // Test undo
         gs.undoMove();
         passed &= (gs.board.getPiece(algebraicToSquare("e2")) == 'P'); // Pawn back
-        passed &= (gs.board.getPiece(algebraicToSquare("e4")) == '?'); // Square empty again
+        passed &= (gs.board.getPiece(algebraicToSquare("e4")) == '.'); // Square empty again
         passed &= (gs.enPassantSquare == -1); // En passant square cleared
         
         printTestResult("Pawn Double Push Test", passed);
@@ -76,7 +79,10 @@ private:
         
         bool passed = true;
         // Initial castling rights should be all enabled
-        passed &= (gs.castlingRights == (WHITE_KINGSIDE | WHITE_QUEENSIDE | BLACK_KINGSIDE | BLACK_QUEENSIDE));
+        passed &= (gs.castlingRights == (WHITE_OO | WHITE_OOO | BLACK_OO | BLACK_OOO));
+        
+        // Move pawn out of the way
+        Move pawnMove('P', algebraicToSquare("h2"), algebraicToSquare("h3"));
         
         // Move king's rook h1-h2
         Move rookMove('R', algebraicToSquare("h1"), algebraicToSquare("h2"));
@@ -84,14 +90,15 @@ private:
         printMove(rookMove);
         
         gs.makeMove(rookMove);
+        gs.board.print();
         
         // Should lose white kingside castling rights
-        passed &= ((gs.castlingRights & WHITE_KINGSIDE) == 0);
-        passed &= ((gs.castlingRights & WHITE_QUEENSIDE) != 0); // Should still have queenside
+        passed &= ((gs.castlingRights & WHITE_OO) == 0);
+        passed &= ((gs.castlingRights & WHITE_OOO) != 0); // Should still have queenside
         
         // Undo and verify rights restored
         gs.undoMove();
-        passed &= (gs.castlingRights == (WHITE_KINGSIDE | WHITE_QUEENSIDE | BLACK_KINGSIDE | BLACK_QUEENSIDE));
+        passed &= (gs.castlingRights == (WHITE_OO | WHITE_OOO | BLACK_OO | BLACK_OOO));
         
         printTestResult("Castling Rights Test", passed);
         return passed;
@@ -103,7 +110,7 @@ private:
         bool passed = true;
         // Make a sequence of moves
         Move move1('P', algebraicToSquare("e2"), algebraicToSquare("e4")); // e2-e4
-        Move move2('P', algebraicToSquare("e7"), algebraicToSquare("e5")); // e7-e5
+        Move move2('p', algebraicToSquare("e7"), algebraicToSquare("e5")); // e7-e5
         
         std::cout << "\nTesting move history with sequence:";
         printMove(move1);

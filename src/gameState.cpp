@@ -18,11 +18,12 @@ void GameState::makeMove(const Move& move) {
     // Make the move on the board
     board.makeMove(move);
     
+    
     // Update game state
     sideToMove = (sideToMove == WHITE) ? BLACK : WHITE;
     updateCastlingRights(move);
     updateEnPassantSquare(move);
-    
+
     // Add to history after all state is updated
     moveHistory.push_back(move);
 }
@@ -55,18 +56,18 @@ void GameState::updateCastlingRights(const Move& move) {
     }
     
     // Remove castling rights if rook moves or is captured
-    if (move.piece == 'R' || (board.getPiece(move.destinationSquare) == 'R')) {
+    if (move.piece == 'R' || move.piece == 'r' || (board.getPiece(move.destinationSquare)) == 'R' || (board.getPiece(move.destinationSquare) == 'r')) {
         // Check source and destination squares for rook positions
-        if (move.sourceSquare == 0 || move.destinationSquare == 0) { // a1
+        if (move.sourceSquare == 56 || move.destinationSquare == 56) { // a1
             castlingRights &= ~WHITE_OOO;
         }
-        if (move.sourceSquare == 7 || move.destinationSquare == 7) { // h1
+        if (move.sourceSquare == 63 || move.destinationSquare == 63) { // h1
             castlingRights &= ~WHITE_OO;
         }
-        if (move.sourceSquare == 56 || move.destinationSquare == 56) { // a8
+        if (move.sourceSquare == 0 || move.destinationSquare == 0) { // a8
             castlingRights &= ~BLACK_OOO;
         }
-        if (move.sourceSquare == 63 || move.destinationSquare == 63) { // h8
+        if (move.sourceSquare == 7 || move.destinationSquare == 7) { // h8
             castlingRights &= ~BLACK_OO;
         }
     }
@@ -75,7 +76,7 @@ void GameState::updateCastlingRights(const Move& move) {
 // Update possible en passant square
 void GameState::updateEnPassantSquare(const Move& move) {
     // Set en passant square only for pawn double moves
-    if (move.piece == 'P') {
+    if (move.piece == 'P' || move.piece == 'p') {
         int rankMove = move.destinationSquare / 8 - move.sourceSquare / 8;
         if (abs(rankMove) == 2) {
             // Set en passant square to the square behind the pawn
