@@ -15,9 +15,32 @@ void GameState::makeMove(const Move& move) {
     moveWithHistory.previousCastlingRights = castlingRights;
     moveWithHistory.previousEnPassantSquare = enPassantSquare;
     
+    // Check for pawn promotion
+    bool isWhite = (sideToMove == WHITE);
+    bool isPawn = (move.piece == 'P' || move.piece == 'p');
+    bool isPromotionRank = (isWhite && move.destinationSquare >= 56) || (!isWhite && move.destinationSquare <= 7);
+
+    if (isPawn && isPromotionRank) {
+        // If no promotion piece is specified, promote to queen by default
+        moveWithHistory.promotionPiece = (move.promotionPiece != '\0') ? move.promotionPiece : (isWhite ? 'Q' : 'q');
+    }
+
     // Make the move on the board
     board.makeMove(move);
-    
+
+    // Handle promotion by replacing the pawn with the promoted piece
+    if (isPawn && isPromotionRank) {
+        board.pawns &= ~(1ULL << move.destinationSquare); // Remove the pawn
+        if (moveWithHistory.promotionPiece == 'Q' || moveWithHistory.promotionPiece == 'q') {
+            board.queens |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'R' || moveWithHistory.promotionPiece == 'r') {
+            board.rooks |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'B' || moveWithHistory.promotionPiece == 'b') {
+            board.bishops |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'N' || moveWithHistory.promotionPiece == 'n') {
+            board.knights |= (1ULL << move.destinationSquare);
+        }
+    }
     
     // Update game state
     sideToMove = (sideToMove == WHITE) ? BLACK : WHITE;
@@ -36,6 +59,15 @@ void GameState::undoMove() {
         
         // Undo the move on the board
         board.undoMove(lastMove);
+
+        // If it was a promotion, put the pawn back
+        if (lastMove.promotionPiece != '\0') {
+            board.queens &= ~(1ULL << lastMove.destinationSquare);
+            board.rooks &= ~(1ULL << lastMove.destinationSquare);
+            board.bishops &= ~(1ULL << lastMove.destinationSquare);
+            board.knights &= ~(1ULL << lastMove.destinationSquare);
+            board.pawns |= (1ULL << lastMove.destinationSquare);
+        }
         
         // Restore exact previous state
         sideToMove = (sideToMove == WHITE) ? BLACK : WHITE;
