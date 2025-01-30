@@ -99,6 +99,7 @@ void testKingMoves() {
 }
 
 int main() {
+    testKnightMoves();
     testKingMoves();
     return 0;
 }
