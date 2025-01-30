@@ -197,8 +197,8 @@ uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t en
                 // Check if current position is on edge before moving
                 if ((piece & FILE_A && (dir == NORTHWEST || dir == SOUTHWEST || dir == WEST)) ||
                     (piece & FILE_H && (dir == NORTHEAST || dir == SOUTHEAST || dir == EAST)) ||
-                    (piece & RANK_1 && (dir == NORTH || dir == NORTHWEST || dir == NORTHEAST)) ||
-                    (piece & RANK_8 && (dir == SOUTH || dir == SOUTHWEST || dir == SOUTHEAST))) {
+                    (piece & RANK_1 && (dir == SOUTH || dir == SOUTHWEST || dir == SOUTHEAST)) ||
+                    (piece & RANK_8 && (dir == NORTH || dir == NORTHWEST || dir == NORTHEAST))) {
                     continue;
                 }
 
