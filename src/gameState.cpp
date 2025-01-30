@@ -167,13 +167,13 @@ bool testEvaluation() {
     GameState gs;
     gs.initialize();  // Start from default position
 
-    int eval = evaluate(gs.board);
+    int eval = gs.board.evaluate();
     std::cout << "Evaluation score (initial position): " << eval << std::endl;
 
     // Move a white pawn forward
     Move e2e4('P', algebraicToSquare("e2"), algebraicToSquare("e4"));
     gs.makeMove(e2e4);
-    eval = evaluate(gs.board);
+    eval = gs.board.evaluate();
     std::cout << "After 1. e4: " << eval << std::endl;
 
     return true;
