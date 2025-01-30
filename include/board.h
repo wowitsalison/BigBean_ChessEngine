@@ -20,14 +20,19 @@ struct Move {
 
 struct Board {
 public:
-    uint64_t pawns, rooks, knights, bishops, queens, kings;
-    uint64_t whitePieces, blackPieces, allPieces;
+    uint64_t whitePawns, blackPawns;
+    uint64_t whiteKnights, blackKnights;
+    uint64_t whiteBishops, blackBishops;
+    uint64_t whiteRooks, blackRooks;
+    uint64_t whiteQueens, blackQueens;
+    uint64_t whiteKings, blackKings;
 
     void initialize(const std::string& fen);
     void print() const;
     char getPiece(int square) const;
     void makeMove(const Move& move);
     void undoMove(const Move& move);
+    int evaluate() const;
 };
 
 // Board masks

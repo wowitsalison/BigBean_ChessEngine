@@ -19,5 +19,3 @@ const std::unordered_map<char, int> PIECE_VALUES = {
     {'Q', QUEEN_VALUE},  {'q', -QUEEN_VALUE},
     {'K', 0},            {'k', 0}
 };
-
-int evaluate(const Board& board);

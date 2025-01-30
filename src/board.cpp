@@ -4,9 +4,13 @@
 
 // Initialize board with starting position
 void Board::initialize(const std::string& fen) {
-    // Clear the board first
-    pawns = rooks = knights = bishops = queens = kings = 0;
-    whitePieces = blackPieces = allPieces = 0;
+    // Clear the board
+    whitePawns = blackPawns = 0;
+    whiteKnights = blackKnights = 0;
+    whiteBishops = blackBishops = 0;
+    whiteRooks = blackRooks = 0;
+    whiteQueens = blackQueens = 0;
+    whiteKings = blackKings = 0;
 
     int square = 0;  // Start at a8 (square 0)
     for (char c : fen) {
@@ -18,22 +22,21 @@ void Board::initialize(const std::string& fen) {
             continue; // Ignore slashes
         } else {
             uint64_t mask = (1ULL << square);
-            if (c == 'P') { pawns |= mask; whitePieces |= mask; }
-            else if (c == 'p') { pawns |= mask; blackPieces |= mask; }
-            else if (c == 'R') { rooks |= mask; whitePieces |= mask; }
-            else if (c == 'r') { rooks |= mask; blackPieces |= mask; }
-            else if (c == 'N') { knights |= mask; whitePieces |= mask; }
-            else if (c == 'n') { knights |= mask; blackPieces |= mask; }
-            else if (c == 'B') { bishops |= mask; whitePieces |= mask; }
-            else if (c == 'b') { bishops |= mask; blackPieces |= mask; }
-            else if (c == 'Q') { queens |= mask; whitePieces |= mask; }
-            else if (c == 'q') { queens |= mask; blackPieces |= mask; }
-            else if (c == 'K') { kings |= mask; whitePieces |= mask; }
-            else if (c == 'k') { kings |= mask; blackPieces |= mask; }
+            if (c == 'P') whitePawns |= mask;
+            else if (c == 'p') blackPawns |= mask;
+            else if (c == 'N') whiteKnights |= mask;
+            else if (c == 'n') blackKnights |= mask;
+            else if (c == 'B') whiteBishops |= mask;
+            else if (c == 'b') blackBishops |= mask;
+            else if (c == 'R') whiteRooks |= mask;
+            else if (c == 'r') blackRooks |= mask;
+            else if (c == 'Q') whiteQueens |= mask;
+            else if (c == 'q') blackQueens |= mask;
+            else if (c == 'K') whiteKings |= mask;
+            else if (c == 'k') blackKings |= mask;
             square++;
         }
     }
-    allPieces = whitePieces | blackPieces;
 }
 
 // Update the board by making a move
@@ -41,90 +44,59 @@ void Board::makeMove(const Move& move) {
     uint64_t sourceMask = 1ULL << move.sourceSquare;
     uint64_t destMask = 1ULL << move.destinationSquare;
 
-    // Determine if the piece being moved is white or black
-    bool isWhite = whitePieces & sourceMask;
-
     // Remove piece from source square
-    if (move.piece == 'P') pawns &= ~sourceMask;
-    else if (move.piece == 'R') rooks &= ~sourceMask;
-    else if (move.piece == 'N') knights &= ~sourceMask;
-    else if (move.piece == 'B') bishops &= ~sourceMask;
-    else if (move.piece == 'Q') queens &= ~sourceMask;
-    else if (move.piece == 'K') kings &= ~sourceMask;
-
-    // Place piece on destination square
-    if (move.piece == 'P') pawns |= destMask;
-    else if (move.piece == 'R') rooks |= destMask;
-    else if (move.piece == 'N') knights |= destMask;
-    else if (move.piece == 'B') bishops |= destMask;
-    else if (move.piece == 'Q') queens |= destMask;
-    else if (move.piece == 'K') kings |= destMask;
-
-    // Update white and black piece bitboards correctly
-    if (isWhite) {
-        whitePieces &= ~sourceMask;
-        whitePieces |= destMask;
-        blackPieces &= ~destMask; // Remove any captured black piece
-    } else {
-        blackPieces &= ~sourceMask;
-        blackPieces |= destMask;
-        whitePieces &= ~destMask; // Remove any captured white piece
-    }
-
-    // Update all pieces bitboard
-    allPieces = whitePieces | blackPieces;
+    if (whitePawns & sourceMask) { whitePawns &= ~sourceMask; whitePawns |= destMask; }
+    else if (blackPawns & sourceMask) { blackPawns &= ~sourceMask; blackPawns |= destMask; }
+    else if (whiteKnights & sourceMask) { whiteKnights &= ~sourceMask; whiteKnights |= destMask; }
+    else if (blackKnights & sourceMask) { blackKnights &= ~sourceMask; blackKnights |= destMask; }
+    else if (whiteBishops & sourceMask) { whiteBishops &= ~sourceMask; whiteBishops |= destMask; }
+    else if (blackBishops & sourceMask) { blackBishops &= ~sourceMask; blackBishops |= destMask; }
+    else if (whiteRooks & sourceMask) { whiteRooks &= ~sourceMask; whiteRooks |= destMask; }
+    else if (blackRooks & sourceMask) { blackRooks &= ~sourceMask; blackRooks |= destMask; }
+    else if (whiteQueens & sourceMask) { whiteQueens &= ~sourceMask; whiteQueens |= destMask; }
+    else if (blackQueens & sourceMask) { blackQueens &= ~sourceMask; blackQueens |= destMask; }
+    else if (whiteKings & sourceMask) { whiteKings &= ~sourceMask; whiteKings |= destMask; }
+    else if (blackKings & sourceMask) { blackKings &= ~sourceMask; blackKings |= destMask; }
 }
 
 void Board::undoMove(const Move& move) {
     uint64_t sourceMask = 1ULL << move.sourceSquare;
     uint64_t destMask = 1ULL << move.destinationSquare;
 
-    // Determine if the piece being moved was white or black
-    bool isWhite = whitePieces & destMask; // The moved piece is now at destination
-
-    // Remove piece from destination square
-    if (move.piece == 'P') pawns &= ~destMask;
-    else if (move.piece == 'R') rooks &= ~destMask;
-    else if (move.piece == 'N') knights &= ~destMask;
-    else if (move.piece == 'B') bishops &= ~destMask;
-    else if (move.piece == 'Q') queens &= ~destMask;
-    else if (move.piece == 'K') kings &= ~destMask;
-
-    // Place piece back on source square
-    if (move.piece == 'P') pawns |= sourceMask;
-    else if (move.piece == 'R') rooks |= sourceMask;
-    else if (move.piece == 'N') knights |= sourceMask;
-    else if (move.piece == 'B') bishops |= sourceMask;
-    else if (move.piece == 'Q') queens |= sourceMask;
-    else if (move.piece == 'K') kings |= sourceMask;
-
-    // Restore white and black piece bitboards
-    if (isWhite) {
-        whitePieces &= ~destMask;
-        whitePieces |= sourceMask;
-    } else {
-        blackPieces &= ~destMask;
-        blackPieces |= sourceMask;
-    }
-
-    // Restore all pieces
-    allPieces = whitePieces | blackPieces;
+    // Move piece back to its original square
+    if (whitePawns & destMask) { whitePawns &= ~destMask; whitePawns |= sourceMask; }
+    else if (blackPawns & destMask) { blackPawns &= ~destMask; blackPawns |= sourceMask; }
+    else if (whiteKnights & destMask) { whiteKnights &= ~destMask; whiteKnights |= sourceMask; }
+    else if (blackKnights & destMask) { blackKnights &= ~destMask; blackKnights |= sourceMask; }
+    else if (whiteBishops & destMask) { whiteBishops &= ~destMask; whiteBishops |= sourceMask; }
+    else if (blackBishops & destMask) { blackBishops &= ~destMask; blackBishops |= sourceMask; }
+    else if (whiteRooks & destMask) { whiteRooks &= ~destMask; whiteRooks |= sourceMask; }
+    else if (blackRooks & destMask) { blackRooks &= ~destMask; blackRooks |= sourceMask; }
+    else if (whiteQueens & destMask) { whiteQueens &= ~destMask; whiteQueens |= sourceMask; }
+    else if (blackQueens & destMask) { blackQueens &= ~destMask; blackQueens |= sourceMask; }
+    else if (whiteKings & destMask) { whiteKings &= ~destMask; whiteKings |= sourceMask; }
+    else if (blackKings & destMask) { blackKings &= ~destMask; blackKings |= sourceMask; }
 }
 
 // Print board in human-readable format
 void Board::print() const {
-    for (int rank = 7; rank >= 0; rank--) {
+    for (int rank = 7; rank >= 0; rank--) {  // Print from rank 8 to rank 1
         for (int file = 0; file < 8; file++) {
-            int square = (7 - rank) * 8 + file;
+            int square = ((7 - rank) * 8) + file;
             uint64_t mask = 1ULL << square;
-            bool isWhite = whitePieces & mask;
 
-            if (pawns & mask) std::cout << (isWhite ? 'P' : 'p') << " ";
-            else if (rooks & mask) std::cout << (isWhite ? 'R' : 'r') << " ";
-            else if (knights & mask) std::cout << (isWhite ? 'N' : 'n') << " ";
-            else if (bishops & mask) std::cout << (isWhite ? 'B' : 'b') << " ";
-            else if (queens & mask) std::cout << (isWhite ? 'Q' : 'q') << " ";
-            else if (kings & mask) std::cout << (isWhite ? 'K' : 'k') << " ";
+            if (whitePawns & mask) std::cout << "P ";
+            else if (blackPawns & mask) std::cout << "p ";
+            else if (whiteKnights & mask) std::cout << "N ";
+            else if (blackKnights & mask) std::cout << "n ";
+            else if (whiteBishops & mask) std::cout << "B ";
+            else if (blackBishops & mask) std::cout << "b ";
+            else if (whiteRooks & mask) std::cout << "R ";
+            else if (blackRooks & mask) std::cout << "r ";
+            else if (whiteQueens & mask) std::cout << "Q ";
+            else if (blackQueens & mask) std::cout << "q ";
+            else if (whiteKings & mask) std::cout << "K ";
+            else if (blackKings & mask) std::cout << "k ";
             else std::cout << ". ";
 
             if (file == 7) std::cout << "\n";
@@ -137,14 +109,18 @@ void Board::print() const {
 // Get any piece at its square
 char Board::getPiece(int square) const {
     uint64_t mask = 1ULL << square;
-    bool isWhite = whitePieces & mask;
-
-    if (pawns & mask) return isWhite ? 'P' : 'p';
-    if (bishops & mask) return isWhite ? 'B' : 'b';
-    if (knights & mask) return isWhite ? 'N' : 'n';
-    if (rooks & mask) return isWhite ? 'R' : 'r';
-    if (queens & mask) return isWhite ? 'Q' : 'q';
-    if (kings & mask) return isWhite ? 'K' : 'k';
+    if (whitePawns & mask) return 'P';
+    if (blackPawns & mask) return 'p';
+    if (whiteKnights & mask) return 'N';
+    if (blackKnights & mask) return 'n';
+    if (whiteBishops & mask) return 'B';
+    if (blackBishops & mask) return 'b';
+    if (whiteRooks & mask) return 'R';
+    if (blackRooks & mask) return 'r';
+    if (whiteQueens & mask) return 'Q';
+    if (blackQueens & mask) return 'q';
+    if (whiteKings & mask) return 'K';
+    if (blackKings & mask) return 'k';
 
     return '.';
 }
