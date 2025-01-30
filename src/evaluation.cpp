@@ -1,6 +1,4 @@
 #include "evaluation.h"
-
-#include "evaluation.h"
 #include "board.h"
 #include <bitset>
 
