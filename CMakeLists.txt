@@ -13,7 +13,7 @@ set(SOURCES
     src/board.cpp
     src/movegen.cpp
     src/utils.cpp
-    src/gameState
+    src/gameState.cpp
 )
 
 # Add the test files
@@ -21,6 +21,7 @@ set(TEST_SOURCES
     tests/pawn_test.cpp
     tests/slidingPiece_test.cpp
     tests/specialPiece_test.cpp
+    tests/gameState_test.cpp
     src/board.cpp
     src/movegen.cpp
 )
