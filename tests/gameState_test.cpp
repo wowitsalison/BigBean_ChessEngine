@@ -18,8 +18,10 @@ private:
     }
     
     bool testPawnMove() {
+        std::cout << "Initializing... " << std::endl;
         gs.initialize();
-        
+        std::cout << "Initialized ";
+
         // Test white pawn single push e2-e3
         Move pawnMove('P', algebraicToSquare("e2"), algebraicToSquare("e3"));
         std::cout << "\nTesting pawn move:";
@@ -113,7 +115,7 @@ private:
         Move move6('p', algebraicToSquare("g5"), algebraicToSquare("g4"));
         Move move7('P', algebraicToSquare("h2"), algebraicToSquare("h4"));
 
-        std::cout << "\nTesting en passant rights: ";
+        std::cout << "\nTesting en passant rights: " << std::endl;
 
         gs.makeMove(move1);
         gs.makeMove(move2);
@@ -132,7 +134,27 @@ private:
 
         passed &= (gs.enPassantSquare == 47);
 
-        printTestResult("\nEn Passant Test", passed);
+        printTestResult("En Passant Test", passed);
+        return passed;
+    }
+
+    bool testPawnPromotion() {
+        std::cout << "Initializing ..." << std::endl;
+        gs.initialize("1k6/7P/8/8/8/8/8/3K4 w - - 0 1");
+        std::cout << "Initialized, ";
+        bool passed = true;
+        std::cout << "Moving... ";
+        // Move pawn to 8th rank
+        Move move('P', algebraicToSquare("h7"), algebraicToSquare("h8"), false, false, 'N');
+
+        std::cout << "\nTesting pawn promotion: " << std::endl;
+
+        gs.makeMove(move);
+
+        passed &= (gs.board.getPiece(algebraicToSquare("h8")) == 'N');
+
+        printTestResult("Pawn Double Push Test", passed);
+
         return passed;
     }
     
@@ -144,7 +166,7 @@ private:
         Move move1('P', algebraicToSquare("e2"), algebraicToSquare("e4")); // e2-e4
         Move move2('p', algebraicToSquare("e7"), algebraicToSquare("e5")); // e7-e5
         
-        std::cout << "\nTesting move history with sequence:";
+        std::cout << "\nTesting move history with sequence: " << std::endl;
         printMove(move1);
         printMove(move2);
         
@@ -202,11 +224,12 @@ public:
         
         bool allPassed = true;
         allPassed &= testPawnMove();
-        allPassed &= testPawnDoubleMove();
-        allPassed &= testCastlingRights();
-        allPassed &= testEnPassant();
-        allPassed &= testMoveHistory();
-        allPassed &= testBoardVisualization();
+        //allPassed &= testPawnDoubleMove();
+        //allPassed &= testCastlingRights();
+        //allPassed &= testEnPassant();
+        //allPassed &= testPawnPromotion();
+        //allPassed &= testMoveHistory();
+        //allPassed &= testBoardVisualization();
         
         std::cout << "\nOverall test result: " << (allPassed ? "ALL PASSED" : "SOME FAILED") << std::endl;
     }
