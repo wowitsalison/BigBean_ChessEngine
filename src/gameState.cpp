@@ -1,4 +1,6 @@
 #include "gameState.h"
+#include <stdexcept>
+#include <iostream>
 
 // Initialize game state at the starting position
 void GameState::initialize() {
@@ -8,7 +10,7 @@ void GameState::initialize() {
 void GameState::initialize(const std::string& fen) {
     board.initialize(fen);
     sideToMove = (fen.find(" w ") != std::string::npos) ? WHITE : BLACK;
-    
+
     // Parse castling rights from FEN
     castlingRights = 0;
     if (fen.find("K") != std::string::npos) castlingRights |= WHITE_OO;
@@ -17,11 +19,27 @@ void GameState::initialize(const std::string& fen) {
     if (fen.find("q") != std::string::npos) castlingRights |= BLACK_OOO;
 
     // Parse en passant square
-    size_t enPassantPos = fen.find(" ") + 1;
-    enPassantSquare = (fen.substr(enPassantPos, 2) != "-") ? algebraicToSquare(fen.substr(enPassantPos, 2)) : -1;
+    size_t enPassantStart = fen.find(" ", fen.find(" ") + 1); // Locate second space (start of en passant)
+    if (enPassantStart != std::string::npos) {
+        enPassantStart++; // Move to actual en passant field
+        std::string enPassantField = fen.substr(enPassantStart, 2);
+        if (enPassantField != "-") {
+            try {
+                enPassantSquare = algebraicToSquare(enPassantField);
+            } catch (const std::invalid_argument&) {
+                std::cerr << "Warning: Invalid en passant field in FEN: " << enPassantField << std::endl;
+                enPassantSquare = -1;
+            }
+        } else {
+            enPassantSquare = -1;
+        }
+    } else {
+        enPassantSquare = -1;
+    }
 
     moveHistory.clear();
 }
+
 
 // Make move and update game state
 void GameState::makeMove(const Move& move) {
