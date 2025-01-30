@@ -27,7 +27,6 @@ void GameState::initialize(const std::string& fen) {
             try {
                 enPassantSquare = algebraicToSquare(enPassantField);
             } catch (const std::invalid_argument&) {
-                std::cerr << "Warning: Invalid en passant field in FEN: " << enPassantField << std::endl;
                 enPassantSquare = -1;
             }
         } else {
