@@ -5,7 +5,7 @@
 
 void testBoardInitialization() {
     Board board;
-    board.initialize();
+    board.initialize(STARTING_FEN);
     board.print();
 
     // Check initial positions of pawns
@@ -41,7 +41,7 @@ void testBoardInitialization() {
 
 void testPieceAccess() {
     Board board;
-    board.initialize();
+    board.initialize(STARTING_FEN);
 
     // Test access to specific pieces
     assert(board.getPiece(0) == 'r' && "Failed to access rook at square 0");

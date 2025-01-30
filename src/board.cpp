@@ -4,18 +4,18 @@
 
 // Initialize board with starting position
 void Board::initialize(const std::string& fen) {
-    // Clear the board
+    // Clear the board first
     pawns = rooks = knights = bishops = queens = kings = 0;
     whitePieces = blackPieces = allPieces = 0;
 
-    int square = 56;  // Start from rank 8, file a
+    int square = 0;  // Start at a8 (square 0)
     for (char c : fen) {
         if (c == ' ') break;  // Stop at board description end
 
         if (isdigit(c)) {
             square += (c - '0');  // Skip empty squares
         } else if (c == '/') {
-            square -= 16;  // Move to the next rank
+            continue; // Ignore slashes
         } else {
             uint64_t mask = (1ULL << square);
             if (c == 'P') { pawns |= mask; whitePieces |= mask; }
