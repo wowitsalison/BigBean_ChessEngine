@@ -3,7 +3,7 @@
 
 int main() {
     Board board;
-    board.initialize();
+    board.initialize(STARTING_FEN);
     board.print();
     return 0;
 }
