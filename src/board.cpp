@@ -37,6 +37,12 @@ void Board::initialize(const std::string& fen) {
             square++;
         }
     }
+    pawns = whitePawns | blackPawns;
+    bishops = whiteBishops | blackBishops;
+    knights = whiteKnights | blackKnights;
+    rooks = whiteRooks | blackRooks;
+    queens = whiteQueens | blackQueens;
+
     whitePieces = whitePawns | whiteBishops | whiteKnights | whiteRooks | whiteQueens | whiteKings;
     blackPieces = blackPawns | blackBishops | blackKnights | blackRooks | blackQueens | blackKings;
     allPieces = whitePieces | blackPieces;
