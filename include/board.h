@@ -22,7 +22,7 @@ public:
     uint64_t pawns, rooks, knights, bishops, queens, kings;
     uint64_t whitePieces, blackPieces, allPieces;
 
-    void initialize();
+    void initialize(const std::string& fen);
     void print() const;
     char getPiece(int square) const;
     void makeMove(const Move& move);
@@ -47,3 +47,6 @@ const uint64_t RANK_5 = RANK_1 >> 32;
 const uint64_t RANK_6 = RANK_1 >> 40;
 const uint64_t RANK_7 = RANK_1 >> 48;
 const uint64_t RANK_8 = RANK_1 >> 56;
+
+// Default chess starting position FEN
+const std::string STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";

@@ -2,10 +2,24 @@
 
 // Initialize game state at the starting position
 void GameState::initialize() {
-    board.initialize();
-    sideToMove = WHITE;
-    castlingRights = WHITE_OO | WHITE_OOO | BLACK_OO | BLACK_OOO;
-    enPassantSquare = -1;
+    initialize(STARTING_FEN);  // Use default chess starting position
+}
+
+void GameState::initialize(const std::string& fen) {
+    board.initialize(fen);
+    sideToMove = (fen.find(" w ") != std::string::npos) ? WHITE : BLACK;
+    
+    // Parse castling rights from FEN
+    castlingRights = 0;
+    if (fen.find("K") != std::string::npos) castlingRights |= WHITE_OO;
+    if (fen.find("Q") != std::string::npos) castlingRights |= WHITE_OOO;
+    if (fen.find("k") != std::string::npos) castlingRights |= BLACK_OO;
+    if (fen.find("q") != std::string::npos) castlingRights |= BLACK_OOO;
+
+    // Parse en passant square
+    size_t enPassantPos = fen.find(" ") + 1;
+    enPassantSquare = (fen.substr(enPassantPos, 2) != "-") ? algebraicToSquare(fen.substr(enPassantPos, 2)) : -1;
+
     moveHistory.clear();
 }
 

@@ -3,17 +3,36 @@
 #include "movegen.h"
 
 // Initialize board with starting position
-void Board::initialize() {
-    pawns = RANK_2 | RANK_7;
-    rooks = (FILE_A | FILE_H) & (RANK_1 | RANK_8);
-    knights = (FILE_B | FILE_G) & (RANK_1 | RANK_8);
-    bishops = (FILE_C | FILE_F) & (RANK_1 | RANK_8);
-    queens = FILE_D & (RANK_1 | RANK_8);
-    kings = FILE_E & (RANK_1 | RANK_8);
+void Board::initialize(const std::string& fen) {
+    // Clear the board
+    pawns = rooks = knights = bishops = queens = kings = 0;
+    whitePieces = blackPieces = allPieces = 0;
 
-    whitePieces = RANK_1 | RANK_2;
-    blackPieces = RANK_7 | RANK_8;
+    int square = 56;  // Start from rank 8, file a
+    for (char c : fen) {
+        if (c == ' ') break;  // Stop at board description end
 
+        if (isdigit(c)) {
+            square += (c - '0');  // Skip empty squares
+        } else if (c == '/') {
+            square -= 16;  // Move to the next rank
+        } else {
+            uint64_t mask = (1ULL << square);
+            if (c == 'P') { pawns |= mask; whitePieces |= mask; }
+            else if (c == 'p') { pawns |= mask; blackPieces |= mask; }
+            else if (c == 'R') { rooks |= mask; whitePieces |= mask; }
+            else if (c == 'r') { rooks |= mask; blackPieces |= mask; }
+            else if (c == 'N') { knights |= mask; whitePieces |= mask; }
+            else if (c == 'n') { knights |= mask; blackPieces |= mask; }
+            else if (c == 'B') { bishops |= mask; whitePieces |= mask; }
+            else if (c == 'b') { bishops |= mask; blackPieces |= mask; }
+            else if (c == 'Q') { queens |= mask; whitePieces |= mask; }
+            else if (c == 'q') { queens |= mask; blackPieces |= mask; }
+            else if (c == 'K') { kings |= mask; whitePieces |= mask; }
+            else if (c == 'k') { kings |= mask; blackPieces |= mask; }
+            square++;
+        }
+    }
     allPieces = whitePieces | blackPieces;
 }
 
