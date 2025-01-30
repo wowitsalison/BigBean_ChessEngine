@@ -14,6 +14,7 @@ set(SOURCES
     src/movegen.cpp
     src/utils.cpp
     src/gameState.cpp
+    src/evaluation.cpp
 )
 
 # Add the test files
