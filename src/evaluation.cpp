@@ -2,8 +2,8 @@
 #include "board.h"
 #include <bitset>
 
-int Board::evaluate() const {
-    int score = 0;
+double Board::evaluate() const {
+    double score = 0;
     
     // Count pieces using __builtin_popcountll (fast population count)
     score += __builtin_popcountll(whitePawns) * PAWN_VALUE;
@@ -17,5 +17,5 @@ int Board::evaluate() const {
     score += __builtin_popcountll(whiteQueens) * QUEEN_VALUE;
     score -= __builtin_popcountll(blackQueens) * QUEEN_VALUE;
 
-    return score;  // Positive means white is ahead, negative means black is ahead
+    return score/100;  // Positive means white is ahead, negative means black is ahead
 }

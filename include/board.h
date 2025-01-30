@@ -34,7 +34,7 @@ public:
     char getPiece(int square) const;
     void makeMove(const Move& move);
     void undoMove(const Move& move);
-    int evaluate() const;
+    double evaluate() const;
 };
 
 // Board masks
