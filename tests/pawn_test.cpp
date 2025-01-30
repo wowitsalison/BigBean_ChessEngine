@@ -5,7 +5,7 @@
 
 void testInitialPawnMoves() {
     Board board;
-    board.initialize();
+    board.initialize(STARTING_FEN);
 
     // White pawn single push
     uint64_t whiteSinglePush = generatePawnSinglePush(board.pawns & board.whitePieces, ~board.allPieces, true);
@@ -30,7 +30,7 @@ void testInitialPawnMoves() {
 
 void testPawnCaptureBlocking() {
     Board board;
-    board.initialize();
+    board.initialize(STARTING_FEN);
 
     // Simulate a blocking scenario
     uint64_t customBlockingPieces = 0x0000ff0000000000ULL; // Blocking white pawn advances
