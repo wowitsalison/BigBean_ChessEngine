@@ -10,8 +10,10 @@ void Board::initialize() {
     bishops = (FILE_C | FILE_F) & (RANK_1 | RANK_8);
     queens = FILE_D & (RANK_1 | RANK_8);
     kings = FILE_E & (RANK_1 | RANK_8);
-    whitePieces = RANK_1;
-    blackPieces = RANK_8;
+
+    whitePieces = RANK_1 | RANK_2;
+    blackPieces = RANK_7 | RANK_8;
+
     allPieces = whitePieces | blackPieces;
 }
 
@@ -19,6 +21,9 @@ void Board::initialize() {
 void Board::makeMove(const Move& move) {
     uint64_t sourceMask = 1ULL << move.sourceSquare;
     uint64_t destMask = 1ULL << move.destinationSquare;
+
+    // Determine if the piece being moved is white or black
+    bool isWhite = whitePieces & sourceMask;
 
     // Remove piece from source square
     if (move.piece == 'P') pawns &= ~sourceMask;
@@ -36,26 +41,27 @@ void Board::makeMove(const Move& move) {
     else if (move.piece == 'Q') queens |= destMask;
     else if (move.piece == 'K') kings |= destMask;
 
-    // Handle special moves (castling, en passant, promotion)
-    if (move.isCastling) {
-        // Implement castling logic here
-    }
-    if (move.isEnPassant) {
-        // Implement en passant logic here
-    }
-    if (move.promotionPiece != '\0') {
-        // Implement promotion logic here
+    // Update white and black piece bitboards correctly
+    if (isWhite) {
+        whitePieces &= ~sourceMask;
+        whitePieces |= destMask;
+        blackPieces &= ~destMask; // Remove any captured black piece
+    } else {
+        blackPieces &= ~sourceMask;
+        blackPieces |= destMask;
+        whitePieces &= ~destMask; // Remove any captured white piece
     }
 
-    // Update piece bitboards
-    whitePieces = pawns | rooks | knights | bishops | queens | kings;
-    blackPieces = pawns | rooks | knights | bishops | queens | kings;
+    // Update all pieces bitboard
     allPieces = whitePieces | blackPieces;
 }
 
 void Board::undoMove(const Move& move) {
     uint64_t sourceMask = 1ULL << move.sourceSquare;
     uint64_t destMask = 1ULL << move.destinationSquare;
+
+    // Determine if the piece being moved was white or black
+    bool isWhite = whitePieces & destMask; // The moved piece is now at destination
 
     // Remove piece from destination square
     if (move.piece == 'P') pawns &= ~destMask;
@@ -73,40 +79,53 @@ void Board::undoMove(const Move& move) {
     else if (move.piece == 'Q') queens |= sourceMask;
     else if (move.piece == 'K') kings |= sourceMask;
 
-    // Handle special moves (castling, en passant, promotion)
-    if (move.isCastling) {
-        // Implement castling undo logic here
+    // Restore white and black piece bitboards
+    if (isWhite) {
+        whitePieces &= ~destMask;
+        whitePieces |= sourceMask;
+    } else {
+        blackPieces &= ~destMask;
+        blackPieces |= sourceMask;
     }
-    if (move.isEnPassant) {
-        // Implement en passant undo logic here
-    }
-    if (move.promotionPiece != '\0') {
-        // Implement promotion undo logic here
-    }
+
+    // Restore all pieces
+    allPieces = whitePieces | blackPieces;
 }
 
 // Print board in human-readable format
 void Board::print() const {
-    for (int i = 0; i < 64; i++) {
-        if (pawns & (1ULL << i)) std::cout << "P ";
-        else if (rooks & (1ULL << i)) std::cout << "R ";
-        else if (knights & (1ULL << i)) std::cout << "N ";
-        else if (bishops & (1ULL << i)) std::cout << "B ";
-        else if (queens & (1ULL << i)) std::cout << "Q ";
-        else if (kings & (1ULL << i)) std::cout << "K ";
-        else std::cout << ". ";
-        if ((i + 1) % 8 == 0) std::cout << "\n";
+    for (int rank = 7; rank >= 0; rank--) {
+        for (int file = 0; file < 8; file++) {
+            int square = rank * 8 + file;
+            uint64_t mask = 1ULL << square;
+            bool isWhite = whitePieces & mask;
+
+            if (pawns & mask) std::cout << (isWhite ? 'P' : 'p') << " ";
+            else if (rooks & mask) std::cout << (isWhite ? 'R' : 'r') << " ";
+            else if (knights & mask) std::cout << (isWhite ? 'N' : 'n') << " ";
+            else if (bishops & mask) std::cout << (isWhite ? 'B' : 'b') << " ";
+            else if (queens & mask) std::cout << (isWhite ? 'Q' : 'q') << " ";
+            else if (kings & mask) std::cout << (isWhite ? 'K' : 'k') << " ";
+            else std::cout << ". ";
+
+            if (file == 7) std::cout << "\n";
+        }
     }
     std::cout << std::endl;
 }
 
+
 // Get any piece at its square
 char Board::getPiece(int square) const {
-    if (pawns & (1ULL << square)) return 'P';
-    if (bishops & (1ULL << square )) return 'B';
-    if (knights & (1ULL << square)) return 'N';
-    if (rooks & (1ULL << square)) return 'R';
-    if (queens & (1ULL << square)) return 'Q';
-    if (kings & (1ULL << square)) return 'K';
-    return '?';
+    uint64_t mask = 1ULL << square;
+    bool isWhite = whitePieces & mask;
+
+    if (pawns & mask) return isWhite ? 'P' : 'p';
+    if (bishops & mask) return isWhite ? 'B' : 'b';
+    if (knights & mask) return isWhite ? 'N' : 'n';
+    if (rooks & mask) return isWhite ? 'R' : 'r';
+    if (queens & mask) return isWhite ? 'Q' : 'q';
+    if (kings & mask) return isWhite ? 'K' : 'k';
+
+    return '.';
 }
