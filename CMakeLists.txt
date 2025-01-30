@@ -23,6 +23,7 @@ set(TEST_SOURCES
     tests/slidingPiece_test.cpp
     tests/specialPiece_test.cpp
     tests/gameState_test.cpp
+    tests/evaluation_test.cpp
     src/board.cpp
     src/movegen.cpp
 )
