@@ -19,7 +19,6 @@ private:
     
     bool testPawnMove() {
         gs.initialize();
-        gs.board.print();
         
         // Test white pawn single push e2-e3
         Move pawnMove('P', algebraicToSquare("e2"), algebraicToSquare("e3"));
@@ -27,8 +26,6 @@ private:
         printMove(pawnMove);
         
         gs.makeMove(pawnMove);
-        
-        gs.board.print();
 
         bool passed = true;
         // Verify board state
@@ -56,7 +53,6 @@ private:
         printMove(pawnMove);
         
         gs.makeMove(pawnMove);
-        gs.board.print();
 
         bool passed = true;
         // Verify board state
@@ -90,7 +86,6 @@ private:
         printMove(rookMove);
         
         gs.makeMove(rookMove);
-        gs.board.print();
         
         // Should lose white kingside castling rights
         passed &= ((gs.castlingRights & WHITE_OO) == 0);
@@ -101,6 +96,43 @@ private:
         passed &= (gs.castlingRights == (WHITE_OO | WHITE_OOO | BLACK_OO | BLACK_OOO));
         
         printTestResult("Castling Rights Test", passed);
+        return passed;
+    }
+
+    bool testEnPassant() {
+        gs.initialize();
+
+        bool passed = true;
+
+        // Move pawns up the board
+        Move move1('P', algebraicToSquare("b2"), algebraicToSquare("b4"));
+        Move move2('p', algebraicToSquare("g7"), algebraicToSquare("g5"));
+        Move move3('P', algebraicToSquare("b4"), algebraicToSquare("b5"));
+        Move move4('p', algebraicToSquare("c7"), algebraicToSquare("c5"));
+        Move move5('P', algebraicToSquare("b5"), algebraicToSquare("b6"));
+        Move move6('p', algebraicToSquare("g5"), algebraicToSquare("g4"));
+        Move move7('P', algebraicToSquare("h2"), algebraicToSquare("h4"));
+
+        std::cout << "\nTesting en passant rights: ";
+
+        gs.makeMove(move1);
+        gs.makeMove(move2);
+        gs.makeMove(move3);
+        gs.makeMove(move4);
+
+        // Check en passant
+        passed &= (gs.enPassantSquare == 18);
+
+        gs.makeMove(move5);
+
+        passed &= (gs.enPassantSquare == -1);
+
+        gs.makeMove(move6);
+        gs.makeMove(move7);
+
+        passed &= (gs.enPassantSquare == 47);
+
+        printTestResult("\nEn Passant Test", passed);
         return passed;
     }
     
@@ -150,7 +182,6 @@ private:
         logMoves(gs.board.whitePieces);
         std::cout << "Black pieces:" << std::endl;
         logMoves(gs.board.blackPieces);
-        gs.board.print();
         
         // Make a move and show updated board
         Move move('P', algebraicToSquare("e2"), algebraicToSquare("e4"));
@@ -161,7 +192,6 @@ private:
         logMoves(gs.board.whitePieces);
         std::cout << "Black pieces:" << std::endl;
         logMoves(gs.board.blackPieces);
-        gs.board.print();
         
         return true;
     }
@@ -174,6 +204,7 @@ public:
         allPassed &= testPawnMove();
         allPassed &= testPawnDoubleMove();
         allPassed &= testCastlingRights();
+        allPassed &= testEnPassant();
         allPassed &= testMoveHistory();
         allPassed &= testBoardVisualization();
         
