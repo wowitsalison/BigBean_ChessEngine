@@ -18,9 +18,7 @@ private:
     }
     
     bool testPawnMove() {
-        std::cout << "Initializing... " << std::endl;
         gs.initialize();
-        std::cout << "Initialized ";
 
         // Test white pawn single push e2-e3
         Move pawnMove('P', algebraicToSquare("e2"), algebraicToSquare("e3"));
