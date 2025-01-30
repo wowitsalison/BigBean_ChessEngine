@@ -96,7 +96,7 @@ void Board::undoMove(const Move& move) {
 void Board::print() const {
     for (int rank = 7; rank >= 0; rank--) {
         for (int file = 0; file < 8; file++) {
-            int square = rank * 8 + file;
+            int square = (7 - rank) * 8 + file;
             uint64_t mask = 1ULL << square;
             bool isWhite = whitePieces & mask;
 
