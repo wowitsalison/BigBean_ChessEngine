@@ -4,6 +4,7 @@
 #include <string>
 #include "board.h"
 #include "utils.h"
+#include "evaluation.h"
 
 enum Side { WHITE, BLACK };
 enum CastlingRights { NO_CASTLING = 0, WHITE_OO = 1, WHITE_OOO = 2, BLACK_OO = 4, BLACK_OOO = 8 };
