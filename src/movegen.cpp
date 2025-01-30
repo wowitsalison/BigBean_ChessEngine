@@ -5,11 +5,11 @@
 uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isWhite) {
     uint64_t move = 0;
     if (isWhite) {
-        move = (pawns << 8) & empty_squares;
+        move = (pawns >> 8) & empty_squares;
         logMoves(move);
         return move;
     } else {
-        move = (pawns >> 8) & empty_squares;
+        move = (pawns << 8) & empty_squares;
         logMoves(move);
         return move;
     }
@@ -20,12 +20,12 @@ uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isW
     uint64_t moves = 0;
     if (isWhite) {
         uint64_t singlePush = generatePawnSinglePush(pawns, empty_squares, true);
-        moves = (singlePush << 8) & empty_squares & 0x00000000FF000000ULL; // Ranks 2 - 4;
+        moves = (singlePush >> 8) & empty_squares & 0x000000FF00000000ULL; // Ranks 2 - 4;
         logMoves(moves);
         return moves;
     } else {
         uint64_t singlePush = generatePawnSinglePush(pawns, empty_squares, false);
-        moves = (singlePush >> 8) & empty_squares & 0x000000FF00000000ULL; // Ranks 5 - 7
+        moves = (singlePush << 8) & empty_squares & 0x00000000FF000000ULL; // Ranks 5 - 7
         logMoves(moves);
         return moves;
     }
@@ -35,14 +35,14 @@ uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isW
 uint64_t generatePawnCaptures(uint64_t pawns, uint64_t enemy_peices, bool isWhite) {
     uint64_t move = 0;
     if (isWhite) {
-        uint64_t leftCapture = (pawns << 7) & ~FILE_A & enemy_peices;
-        uint64_t rightCapture = (pawns << 9) & ~FILE_H & enemy_peices;
+        uint64_t leftCapture = (pawns >> 7) & ~FILE_A & enemy_peices;
+        uint64_t rightCapture = (pawns >> 9) & ~FILE_H & enemy_peices;
         move = leftCapture | rightCapture;
         logMoves(move);
         return move;
     } else {
-        uint64_t leftCapture = (pawns >> 9) & ~FILE_H & enemy_peices;
-        uint64_t rightCapture = (pawns >> 7) & ~FILE_A & enemy_peices;
+        uint64_t leftCapture = (pawns << 9) & ~FILE_H & enemy_peices;
+        uint64_t rightCapture = (pawns << 7) & ~FILE_A & enemy_peices;
         move = leftCapture | rightCapture;
         logMoves(move);
         return move;
