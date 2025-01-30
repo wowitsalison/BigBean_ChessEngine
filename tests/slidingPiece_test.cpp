@@ -132,5 +132,7 @@ void testQueenMoves() {
 
 int main() {
     testBishopMoves();
+    testRookMoves();
+    testQueenMoves();
     return 0;
 }
