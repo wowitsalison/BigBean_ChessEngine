@@ -26,6 +26,7 @@ public:
     uint64_t whiteRooks, blackRooks;
     uint64_t whiteQueens, blackQueens;
     uint64_t whiteKings, blackKings;
+    uint64_t allPieces, whitePieces, blackPieces;
 
     void initialize(const std::string& fen);
     void print() const;
