@@ -4,7 +4,7 @@
 void GameState::initialize() {
     board.initialize();
     sideToMove = WHITE;
-    castlingRights = WHITE_KINGSIDE | WHITE_QUEENSIDE | BLACK_KINGSIDE | BLACK_QUEENSIDE;
+    castlingRights = WHITE_OO | WHITE_OOO | BLACK_OO | BLACK_OOO;
     enPassantSquare = -1;
     moveHistory.clear();
 }
@@ -48,9 +48,9 @@ void GameState::updateCastlingRights(const Move& move) {
     // Remove castling rights if king moves
     if (move.piece == 'K') {
         if (sideToMove == WHITE) {
-            castlingRights &= ~(WHITE_KINGSIDE | WHITE_QUEENSIDE);
+            castlingRights &= ~(WHITE_OO | WHITE_OOO);
         } else {
-            castlingRights &= ~(BLACK_KINGSIDE | BLACK_QUEENSIDE);
+            castlingRights &= ~(BLACK_OO | BLACK_OOO);
         }
     }
     
@@ -58,16 +58,16 @@ void GameState::updateCastlingRights(const Move& move) {
     if (move.piece == 'R' || (board.getPiece(move.destinationSquare) == 'R')) {
         // Check source and destination squares for rook positions
         if (move.sourceSquare == 0 || move.destinationSquare == 0) { // a1
-            castlingRights &= ~WHITE_QUEENSIDE;
+            castlingRights &= ~WHITE_OOO;
         }
         if (move.sourceSquare == 7 || move.destinationSquare == 7) { // h1
-            castlingRights &= ~WHITE_KINGSIDE;
+            castlingRights &= ~WHITE_OO;
         }
         if (move.sourceSquare == 56 || move.destinationSquare == 56) { // a8
-            castlingRights &= ~BLACK_QUEENSIDE;
+            castlingRights &= ~BLACK_OOO;
         }
         if (move.sourceSquare == 63 || move.destinationSquare == 63) { // h8
-            castlingRights &= ~BLACK_KINGSIDE;
+            castlingRights &= ~BLACK_OO;
         }
     }
 }

@@ -5,7 +5,7 @@
 #include "board.h"
 
 enum Side { WHITE, BLACK };
-enum CastlingRights { NO_CASTLING = 0, WHITE_KINGSIDE = 1, WHITE_QUEENSIDE = 2, BLACK_KINGSIDE = 4, BLACK_QUEENSIDE = 8 };
+enum CastlingRights { NO_CASTLING = 0, WHITE_OO = 1, WHITE_OOO = 2, BLACK_OO = 4, BLACK_OOO = 8 };
 
 struct GameState {
     Side sideToMove;
