@@ -49,7 +49,7 @@ void GameState::makeMove(const Move& move) {
     // Check for pawn promotion
     bool isWhite = (sideToMove == WHITE);
     bool isPawn = (move.piece == 'P' || move.piece == 'p');
-    bool isPromotionRank = (isWhite && move.destinationSquare >= 56) || (!isWhite && move.destinationSquare <= 7);
+    bool isPromotionRank = (isWhite && move.destinationSquare <= 7) || (!isWhite && move.destinationSquare >= 56);
 
     if (isPawn && isPromotionRank) {
         // If no promotion piece is specified, promote to queen by default
@@ -61,15 +61,24 @@ void GameState::makeMove(const Move& move) {
 
     // Handle promotion by replacing the pawn with the promoted piece
     if (isPawn && isPromotionRank) {
-        board.pawns &= ~(1ULL << move.destinationSquare); // Remove the pawn
-        if (moveWithHistory.promotionPiece == 'Q' || moveWithHistory.promotionPiece == 'q') {
-            board.queens |= (1ULL << move.destinationSquare);
-        } else if (moveWithHistory.promotionPiece == 'R' || moveWithHistory.promotionPiece == 'r') {
-            board.rooks |= (1ULL << move.destinationSquare);
-        } else if (moveWithHistory.promotionPiece == 'B' || moveWithHistory.promotionPiece == 'b') {
-            board.bishops |= (1ULL << move.destinationSquare);
-        } else if (moveWithHistory.promotionPiece == 'N' || moveWithHistory.promotionPiece == 'n') {
-            board.knights |= (1ULL << move.destinationSquare);
+        if (move.piece == 'P') board.whitePawns &= ~(1ULL << move.destinationSquare);
+        if (move.piece == 'p') board.blackPawns &= ~(1ULL << move.destinationSquare);
+        if (moveWithHistory.promotionPiece == 'Q') {
+            board.whiteQueens |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'q') {
+            board.blackQueens |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'R') {
+            board.whiteRooks |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'r') {
+            board.blackRooks |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'B') {
+            board.whiteBishops |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'b') {
+            board.blackBishops |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'N') {
+            board.whiteKnights |= (1ULL << move.destinationSquare);
+        } else if (moveWithHistory.promotionPiece == 'n') {
+            board.blackKnights |= (1ULL << move.destinationSquare);
         }
     }
     
@@ -119,7 +128,8 @@ void GameState::updateCastlingRights(const Move& move) {
     }
     
     // Remove castling rights if rook moves or is captured
-    if (move.piece == 'R' || move.piece == 'r' || (board.getPiece(move.destinationSquare)) == 'R' || (board.getPiece(move.destinationSquare) == 'r')) {
+    if (move.piece == 'R' || move.piece == 'r' || (board.getPiece(move.destinationSquare)) == 'R' 
+        || (board.getPiece(move.destinationSquare) == 'r')) {
         // Check source and destination squares for rook positions
         if (move.sourceSquare == 56 || move.destinationSquare == 56) { // a1
             castlingRights &= ~WHITE_OOO;
