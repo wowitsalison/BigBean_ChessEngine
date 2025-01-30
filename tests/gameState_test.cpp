@@ -137,21 +137,17 @@ private:
     }
 
     bool testPawnPromotion() {
-        std::cout << "Initializing ..." << std::endl;
         gs.initialize("1k6/7P/8/8/8/8/8/3K4 w - - 0 1");
-        std::cout << "Initialized, ";
         bool passed = true;
-        std::cout << "Moving... ";
+
         // Move pawn to 8th rank
         Move move('P', algebraicToSquare("h7"), algebraicToSquare("h8"), false, false, 'N');
-
-        std::cout << "\nTesting pawn promotion: " << std::endl;
 
         gs.makeMove(move);
 
         passed &= (gs.board.getPiece(algebraicToSquare("h8")) == 'N');
 
-        printTestResult("Pawn Double Push Test", passed);
+        printTestResult("Pawn promotion", passed);
 
         return passed;
     }
@@ -222,12 +218,12 @@ public:
         
         bool allPassed = true;
         allPassed &= testPawnMove();
-        //allPassed &= testPawnDoubleMove();
-        //allPassed &= testCastlingRights();
-        //allPassed &= testEnPassant();
-        //allPassed &= testPawnPromotion();
-        //allPassed &= testMoveHistory();
-        //allPassed &= testBoardVisualization();
+        allPassed &= testPawnDoubleMove();
+        allPassed &= testCastlingRights();
+        allPassed &= testEnPassant();
+        allPassed &= testPawnPromotion();
+        allPassed &= testMoveHistory();
+        allPassed &= testBoardVisualization();
         
         std::cout << "\nOverall test result: " << (allPassed ? "ALL PASSED" : "SOME FAILED") << std::endl;
     }
