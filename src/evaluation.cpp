@@ -3,7 +3,7 @@
 #include <bitset>
 
 double Board::evaluate() const {
-    double score = (materialEvaluation() + positionalEvaluation())/100;
+    double score = (static_cast<double>(materialEvaluation()) + positionalEvaluation()) / 100.0;
     return score;
 }
 
@@ -45,13 +45,13 @@ int Board::positionalEvaluation() const {
     uint64_t blackKingPos = blackKings;
 
     for (int i = 0; i < 8; i++) {
-        uint64_t wKingAdj = whiteKingPos << ADJACENT_SQUARES[i];
-        uint64_t bKingAdj = blackKingPos << ADJACENT_SQUARES[i];
+        uint64_t wKingAdj = (ADJACENT_SQUARES[i] > 0) ? (whiteKingPos << ADJACENT_SQUARES[i]) : (whiteKingPos >> -ADJACENT_SQUARES[i]);
+        uint64_t bKingAdj = (ADJACENT_SQUARES[i] > 0) ? (blackKingPos << ADJACENT_SQUARES[i]) : (blackKingPos >> -ADJACENT_SQUARES[i]);
 
-        if (wKingAdj & blackPawns || wKingAdj & blackKnights || wKingAdj & blackBishops || wKingAdj & blackRooks || wKingAdj & blackQueens) {
+        if (wKingAdj & (blackPawns | blackKnights | blackBishops | blackRooks | blackQueens)) {
             score += KING_SAFETY_PENALTY; // White king unsafe
         }
-        if (bKingAdj & whitePawns || bKingAdj & whiteKnights || bKingAdj & whiteBishops || bKingAdj & whiteRooks || bKingAdj & whiteQueens) {
+        if (bKingAdj & (whitePawns | whiteKnights | whiteBishops | whiteRooks | whiteQueens)) {
             score -= KING_SAFETY_PENALTY; // Black king unsafe
         }
     }

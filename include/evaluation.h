@@ -21,12 +21,12 @@ const std::unordered_map<char, int> PIECE_VALUES = {
 };
 
 // Positional values - will most likely be adjusted later
-const int CENTER_CONTROL_BONUS = 5;     // Bonus for controlling central squares
-const int KING_SAFETY_PENALTY = -10;    // Penalty for exposed kings
-const int ADVANCED_PAWN_BONUS = 10;     // Bonus for pawns on 2nd/7th rank
-const int KNIGHT_CENTER_BONUS = 15;     // Bonus for knights in the center
-const int ROOK_OPEN_FILE_BONUS = 20;    // Bonus for rooks on open files
+const int CENTER_CONTROL_BONUS = 8;     // Bonus for controlling central squares
+const int KING_SAFETY_PENALTY = -15;    // Penalty for exposed kings
+const int ADVANCED_PAWN_BONUS = 15;     // Bonus for pawns on 2nd/7th rank
+const int KNIGHT_CENTER_BONUS = 20;     // Bonus for knights in the center
+const int ROOK_OPEN_FILE_BONUS = 25;    // Bonus for rooks on open files
 
 // Important bitboards
 const uint64_t CENTER_SQUARES = (1ULL << 27) | (1ULL << 28) | (1ULL << 35) | (1ULL << 36);  // d4, e4, d5, e5
-const uint64_t ADJACENT_SQUARES[] = {1, 7, 8, 9, -1, -7, -8, -9}; // 8 squares around the king
+const int ADJACENT_SQUARES[] = {1, 7, 8, 9, -1, -7, -8, -9}; // 8 squares around the king
