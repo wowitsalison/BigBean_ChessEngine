@@ -34,7 +34,8 @@ public:
     char getPiece(int square) const;
     void makeMove(const Move& move);
     void undoMove(const Move& move);
-    double materialEvaluation() const;
+    double evaluate() const;
+    int materialEvaluation() const;
     int positionalEvaluation() const;
 };
 
