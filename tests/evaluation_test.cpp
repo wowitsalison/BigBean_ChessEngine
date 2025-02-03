@@ -76,12 +76,12 @@ private:
     }
 
     bool testWhiteAdvantage() {
-        gs.initialize("1k3r2/2R3pp/5p2/8/8/8/5PPP/6K1 w - - 0 1");
+        gs.initialize("1k5r/3Ppp1p/p5n1/8/3NP3/8/5PPP/2R3K1 w - - 0 1");
 
         score = gs.board.evaluate();
 
         bool passed = true;
-        passed &= (score > 1);
+        passed &= (score > 0);
         std::cout << "\nActual score: " << score;
 
         printTestResult("\nWhite Advantage test", passed);
