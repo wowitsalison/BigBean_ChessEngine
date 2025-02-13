@@ -1,5 +1,6 @@
 #pragma once
 #include "board.h"
+#include "gameState.h"
 #include <cstdint>
 
 // Direction constants for sliding pieces
@@ -22,6 +23,10 @@ const int WESTSOUTH_L = 6;
 const int WESTNORTH_L = -10;
 const int NORTHWEST_L = -17;
 
+const int BISHOP_DIRECTIONS[] = {NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
+const int KNIGHT_DIRECTIONS[] = {NORTHEAST_L, EASTNORTH_L, EASTSOUTH_L, SOUTHEAST_L, SOUTHWEST_L, WESTSOUTH_L, WESTNORTH_L, NORTHWEST_L};
+const int ROOK_DIRECTIONS[] =   {NORTH, SOUTH, EAST, WEST};
+
 // Pawn moves
 uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isWhite);
 uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isWhite);
@@ -36,3 +41,12 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
 uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t enemy_pieces);
 // King moves
 uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enemy_pieces, uint64_t enemy_attacks);
+
+uint64_t getWhiteAttacks();
+uint64_t getBlackAttacks();
+uint64_t generatePawnAttacks(uint64_t pawns, Side side);
+uint64_t generateKnightAttacks(uint64_t knights);
+uint64_t generateBishopAttacks(uint64_t bishops, uint64_t allPieces);
+uint64_t generateRookAttacks(uint64_t rooks, uint64_t allPieces);
+uint64_t generateQueenAttacks(uint64_t queens, uint64_t allPieces);
+uint64_t generateKingAttacks(uint64_t king);
