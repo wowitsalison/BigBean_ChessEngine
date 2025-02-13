@@ -28,4 +28,10 @@ private:
     void updateEnPassantSquare(const Move& move);
     void updateCastlingRightsUndo(const Move& move);
     void updateEnPassantSquareUndo(const Move& move);
+
+    bool isCheck() const;
+    bool isCheckmate();
+    bool isStalemate();
+
+    std::vector<Move> generateLegalMoves();
 };
