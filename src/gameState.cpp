@@ -187,3 +187,35 @@ bool testEvaluation() {
 
     return true;
 }
+
+bool GameState::isCheck() const {
+    uint64_t kingPos = (sideToMove == WHITE) ? board.whiteKings : board.blackKings;
+    uint64_t enemyAttacks = (sideToMove == WHITE) ? board.getBlackAttacks() : board.getWhiteAttacks();
+    return kingPos & enemyAttacks;
+}
+
+bool GameState::isCheckmate() {
+    if (!isCheck()) return false;
+    std::vector<Move> legalMoves = generateLegalMoves();
+    return legalMoves.empty();
+}
+
+bool GameState::isStalemate() {
+    if (isCheck()) return false;
+    std::vector<Move> legalMoves = generateLegalMoves();
+    return legalMoves.empty();
+}
+
+std::vector<Move> GameState::generateLegalMoves() {
+    std::vector<Move> allMoves = board.generateAllMoves(sideToMove);
+    std::vector<Move> legalMoves;
+
+    for (const Move& move : allMoves) {
+        makeMove(move);
+        if (!isCheck()) {
+            legalMoves.push_back(move);
+        }
+        undoMove();
+    }
+    return legalMoves;
+}
