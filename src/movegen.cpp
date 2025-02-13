@@ -340,3 +340,74 @@ uint64_t generateSlidingAttacks(int square, uint64_t allPieces, const int direct
     }
     return attacks;
 }
+
+std::vector<Move> generateAllMoves(const Board& board, Side side) {
+    std::vector<Move> moves;
+    bool isWhite = (side == WHITE);
+
+    uint64_t friendlyPieces = isWhite ? board.whitePieces : board.blackPieces;
+    uint64_t enemyPieces = isWhite ? board.blackPieces : board.whitePieces;
+    uint64_t emptySquares = ~board.allPieces;
+    uint64_t enemyAttacks = isWhite ? board.getBlackAttacks() : board.getWhiteAttacks();
+
+    uint64_t pawns = isWhite ? board.whitePawns : board.blackPawns;
+    uint64_t singlePushes = generatePawnSinglePush(pawns, emptySquares, isWhite);
+    uint64_t doublePushes = generatePawnDoublePush(pawns, emptySquares, isWhite);
+    uint64_t captures = generatePawnCaptures(pawns, enemyPieces, isWhite);
+
+    // Correct insert usage
+    std::vector<Move> pawnMoves = bitboardToAlgebraicMoves(pawns, singlePushes, 'P');
+    moves.insert(moves.end(), pawnMoves.begin(), pawnMoves.end());
+
+    pawnMoves = bitboardToAlgebraicMoves(pawns, doublePushes, 'P');
+    moves.insert(moves.end(), pawnMoves.begin(), pawnMoves.end());
+
+    pawnMoves = bitboardToAlgebraicMoves(pawns, captures, 'P');
+    moves.insert(moves.end(), pawnMoves.begin(), pawnMoves.end());
+
+    uint64_t bishops = isWhite ? board.whiteBishops : board.blackBishops;
+    uint64_t bishopMoves = generateBishopMoves(bishops, emptySquares, enemyPieces);
+    std::vector<Move> bishopMoveList = bitboardToAlgebraicMoves(bishops, bishopMoves, 'B');
+    moves.insert(moves.end(), bishopMoveList.begin(), bishopMoveList.end());
+
+    uint64_t knights = isWhite ? board.whiteKnights : board.blackKnights;
+    uint64_t knightMoves = generateKnightMoves(knights, emptySquares, enemyPieces);
+    std::vector<Move> knightMoveList = bitboardToAlgebraicMoves(knights, knightMoves, 'N');
+    moves.insert(moves.end(), knightMoveList.begin(), knightMoveList.end());
+
+    uint64_t rooks = isWhite ? board.whiteRooks : board.blackRooks;
+    uint64_t rookMoves = generateRookMoves(rooks, emptySquares, enemyPieces);
+    std::vector<Move> rookMoveList = bitboardToAlgebraicMoves(rooks, rookMoves, 'R');
+    moves.insert(moves.end(), rookMoveList.begin(), rookMoveList.end());
+
+    uint64_t queens = isWhite ? board.whiteQueens : board.blackQueens;
+    uint64_t queenMoves = generateQueenMoves(queens, emptySquares, enemyPieces);
+    std::vector<Move> queenMoveList = bitboardToAlgebraicMoves(queens, queenMoves, 'Q');
+    moves.insert(moves.end(), queenMoveList.begin(), queenMoveList.end());
+
+    uint64_t kings = isWhite ? board.whiteKings : board.blackKings;
+    uint64_t kingMoves = generateKingMoves(kings, emptySquares, enemyPieces, enemyAttacks);
+    std::vector<Move> kingMoveList = bitboardToAlgebraicMoves(kings, kingMoves, 'K');
+    moves.insert(moves.end(), kingMoveList.begin(), kingMoveList.end());
+
+    return moves;
+}
+
+
+std::vector<Move> bitboardToAlgebraicMoves(uint64_t fromPieces, uint64_t toSquares, char piece) {
+    std::vector<Move> moves;
+    while (fromPieces) {
+        int from = __builtin_ctzll(fromPieces);  // Get source square
+        uint64_t toMask = toSquares & ~(toSquares - 1); // Get each destination one by one
+        while (toMask) {
+            int to = __builtin_ctzll(toMask);  // Get destination square
+            std::string fromAlgebraic = squareToAlgebraic(from);
+            std::string toAlgebraic = squareToAlgebraic(to);
+            moves.push_back(Move(piece, from, to));  // Store as Move object
+            toSquares &= ~toMask; // Remove processed move
+            toMask = toSquares & ~(toSquares - 1);
+        }
+        fromPieces &= fromPieces - 1;  // Remove processed piece
+    }
+    return moves;
+}

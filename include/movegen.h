@@ -52,3 +52,4 @@ uint64_t generateQueenAttacks(uint64_t queens, uint64_t allPieces);
 uint64_t generateKingAttacks(uint64_t king);
 
 std::vector<Move> generateAllMoves(const Board& board, Side side);
+std::vector<Move> bitboardToMoves(uint64_t fromPieces, uint64_t toSquares, char piece);
