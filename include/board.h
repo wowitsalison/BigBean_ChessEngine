@@ -37,8 +37,15 @@ public:
     double evaluate() const;
     int materialEvaluation() const;
     int positionalEvaluation() const;
+
     uint64_t getWhiteAttacks() const;
     uint64_t getBlackAttacks() const;
+    uint64_t generatePawnAttacks();
+    uint64_t generateKnightAttacks();
+    uint64_t generateBishopAttacks();
+    uint64_t generateRookAttacks();
+    uint64_t generateQueenAttacks();
+    uint64_t generateKingAttacks();
 };
 
 // Board masks
