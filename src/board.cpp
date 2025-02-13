@@ -133,3 +133,25 @@ char Board::getPiece(int square) const {
 
     return '.';
 }
+
+uint64_t Board::getWhiteAttacks() const {
+    uint64_t attacks = 0;
+    attacks |= generatePawnAttacks(whitePawns, WHITE);
+    attacks |= generateKnightAttacks(whiteKnights);
+    attacks |= generateBishopAttacks(whiteBishops, allPieces);
+    attacks |= generateRookAttacks(whiteRooks, allPieces);
+    attacks |= generateQueenAttacks(whiteQueens, allPieces);
+    attacks |= generateKingAttacks(whiteKings);
+    return attacks;
+}
+
+uint64_t Board::getBlackAttacks() const {
+    uint64_t attacks = 0;
+    attacks |= generatePawnAttacks(blackPawns, BLACK);
+    attacks |= generateKnightAttacks(blackKnights);
+    attacks |= generateBishopAttacks(blackBishops, allPieces);
+    attacks |= generateRookAttacks(blackRooks, allPieces);
+    attacks |= generateQueenAttacks(blackQueens, allPieces);
+    attacks |= generateKingAttacks(blackKings);
+    return attacks;
+}

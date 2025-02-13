@@ -1,5 +1,7 @@
 #include "movegen.h"
 #include "utils.h"
+#include "board.h"
+#include "gameState.h"
 
 // Move pawn one square forward
 uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isWhite) {
@@ -262,4 +264,79 @@ uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enem
     }
     logMoves(moves); // Log moves in algebraic notation
     return moves;
+}
+
+// Pawn attack bitboards
+uint64_t generatePawnAttacks(uint64_t pawns, Side side) {
+    return (side == WHITE) ? ((pawns & ~FILE_A) << 7) | ((pawns & ~FILE_H) << 9)
+                           : ((pawns & ~FILE_A) >> 9) | ((pawns & ~FILE_H) >> 7);
+}
+
+// Knight attack bitboards
+uint64_t generateKnightAttacks(uint64_t knights) {
+    uint64_t attacks = 0;
+    attacks |= (knights & ~FILE_A) >> 17;
+    attacks |= (knights & ~FILE_H) >> 15;
+    attacks |= (knights & ~(FILE_A | FILE_B)) >> 10;
+    attacks |= (knights & ~(FILE_H | FILE_G)) >> 6;
+    attacks |= (knights & ~FILE_A) << 15;
+    attacks |= (knights & ~FILE_H) << 17;
+    attacks |= (knights & ~(FILE_A | FILE_B)) << 6;
+    attacks |= (knights & ~(FILE_H | FILE_G)) << 10;
+    return attacks;
+}
+
+// Bishop attack bitboards
+uint64_t generateBishopAttacks(uint64_t bishops, uint64_t allPieces) {
+    uint64_t attacks = 0;
+    for (int square = 0; square < 64; square++) {
+        if (bishops & (1ULL << square)) {
+            attacks |= generateSlidingAttacks(square, allPieces, BISHOP_DIRECTIONS);
+        }
+    }
+    return attacks;
+}
+
+// Rook attack bitboards
+uint64_t generateRookAttacks(uint64_t rooks, uint64_t allPieces) {
+    uint64_t attacks = 0;
+    for (int square = 0; square < 64; square++) {
+        if (rooks & (1ULL << square)) {
+            attacks |= generateSlidingAttacks(square, allPieces, ROOK_DIRECTIONS);
+        }
+    }
+    return attacks;
+}
+
+// Queen attack bitboards (combination of bishop and rook)
+uint64_t generateQueenAttacks(uint64_t queens, uint64_t allPieces) {
+    return generateBishopAttacks(queens, allPieces) | generateRookAttacks(queens, allPieces);
+}
+
+// King attack bitboards
+uint64_t generateKingAttacks(uint64_t king) {
+    uint64_t attacks = 0;
+    attacks |= (king & ~FILE_A) >> 1;
+    attacks |= (king & ~FILE_H) << 1;
+    attacks |= king >> 8;
+    attacks |= king << 8;
+    attacks |= (king & ~FILE_A) >> 9;
+    attacks |= (king & ~FILE_H) >> 7;
+    attacks |= (king & ~FILE_A) << 7;
+    attacks |= (king & ~FILE_H) << 9;
+    return attacks;
+}
+
+// Sliding piece attack generator
+uint64_t generateSlidingAttacks(int square, uint64_t allPieces, const int directions[]) {
+    uint64_t attacks = 0;
+    for (int dir = 0; dir < 4; dir++) {
+        uint64_t piece = 1ULL << square;
+        while (piece) {
+            piece = (directions[dir] > 0) ? (piece << directions[dir]) : (piece >> -directions[dir]);
+            if (piece & allPieces) break;
+            attacks |= piece;
+        }
+    }
+    return attacks;
 }
