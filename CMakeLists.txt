@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 project(BigBean)
 
-# Set the C++ standard
+# C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
 # Include directories
 include_directories(include)
 
-# Add the source files
+# Source files
 set(SOURCES
     src/main.cpp
     src/board.cpp
@@ -17,7 +17,7 @@ set(SOURCES
     src/evaluation.cpp
 )
 
-# Add the test files
+# Test files
 set(TEST_SOURCES
     tests/pawn_test.cpp
     tests/slidingPiece_test.cpp
@@ -28,8 +28,8 @@ set(TEST_SOURCES
     src/movegen.cpp
 )
 
-# Add the executable for the main program
+# Executable for the main program
 add_executable(BigBean ${SOURCES})
 
-# Add the executable for the tests
+# Executable for the tests
 add_executable(BigBeanTests ${TEST_SOURCES})
