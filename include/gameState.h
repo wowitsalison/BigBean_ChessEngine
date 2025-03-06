@@ -34,6 +34,4 @@ private:
     void updateEnPassantSquare(const Move& move);
     void updateCastlingRightsUndo(const Move& move);
     void updateEnPassantSquareUndo(const Move& move);
-
-    
 };
