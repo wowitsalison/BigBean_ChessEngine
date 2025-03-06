@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <string>
 
+enum Side { WHITE, BLACK };
+
 struct Move {
     char piece;
     int sourceSquare;

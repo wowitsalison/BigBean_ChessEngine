@@ -207,7 +207,7 @@ bool GameState::isStalemate() {
 }
 
 std::vector<Move> GameState::generateLegalMoves() {
-    std::vector<Move> allMoves = board.generateAllMoves(sideToMove);
+    std::vector<Move> allMoves = generateAllMoves(board, sideToMove);
     std::vector<Move> legalMoves;
 
     for (const Move& move : allMoves) {
