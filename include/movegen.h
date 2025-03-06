@@ -1,6 +1,5 @@
 #pragma once
 #include "board.h"
-#include "gameState.h"
 #include <cstdint>
 
 // Direction constants for sliding pieces
@@ -26,6 +25,8 @@ const int NORTHWEST_L = -17;
 const int BISHOP_DIRECTIONS[] = {NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
 const int KNIGHT_DIRECTIONS[] = {NORTHEAST_L, EASTNORTH_L, EASTSOUTH_L, SOUTHEAST_L, SOUTHWEST_L, WESTSOUTH_L, WESTNORTH_L, NORTHWEST_L};
 const int ROOK_DIRECTIONS[] =   {NORTH, SOUTH, EAST, WEST};
+const int QUEEN_DIRECTIONS[] = {NORTH, SOUTH, EAST, WEST, NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
+const int KING_DIRECTIONS[] = {NORTH, SOUTH, EAST, WEST, NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
 
 // Pawn moves
 uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isWhite);

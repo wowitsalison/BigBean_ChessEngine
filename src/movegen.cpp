@@ -55,11 +55,10 @@ uint64_t generatePawnCaptures(uint64_t pawns, uint64_t enemy_peices, bool isWhit
 uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t enemy_pieces) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
-    const int BISHOP_DIRS[] = {NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
 
     for (int square = 0; square < 64; square++) {
         if (bishops & (1ULL << square)) {
-            for (int dir : BISHOP_DIRS) {
+            for (int dir : BISHOP_DIRECTIONS) {
                 uint64_t piece = 1ULL << square;
                 
                 // Check if current position is on edge before moving
@@ -104,11 +103,10 @@ uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t 
 uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t enemy_pieces) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
-    const int KNIGHT_DIRS[] = {NORTHEAST_L, EASTNORTH_L, EASTSOUTH_L, SOUTHEAST_L, SOUTHWEST_L, WESTSOUTH_L, WESTNORTH_L, NORTHWEST_L};
     
     for (int square = 0; square < 64; square++) {
         if (knights & (1ULL << square)) {
-            for (int dir : KNIGHT_DIRS) {
+            for (int dir : KNIGHT_DIRECTIONS) {
                 uint64_t piece = 1ULL << square;
                 
                 // Check if current position is on edge before moving
@@ -141,11 +139,10 @@ uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t 
 uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enemy_pieces) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
-    const int ROOK_DIRS[] = {NORTH, SOUTH, EAST, WEST};
 
     for (int square = 0; square < 64; square++) {
         if (rooks & (1ULL << square)) {
-            for (int dir : ROOK_DIRS) {
+            for (int dir : ROOK_DIRECTIONS) {
                 uint64_t piece = 1ULL << square;
 
                 // Check if current position is on edge before moving
@@ -157,12 +154,9 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
                 }
 
                 while (true) {
-                    if (dir > 0) {
-                        piece <<= dir;
-                    } else {
-                        piece >>= -dir;
-                    }
-
+                    if (dir > 0) piece <<= dir;
+                    else piece >>= -dir;
+                    
                     if (piece == 0) break;
 
                     if (piece & availableSquares) {
@@ -189,11 +183,10 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
 uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t enemy_pieces) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
-    const int QUEEN_DIRS[] = {NORTH, SOUTH, EAST, WEST, NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
 
     for (int square = 0; square < 64; square++) {
         if (queens & (1ULL << square)) {
-            for (int dir : QUEEN_DIRS) {
+            for (int dir : QUEEN_DIRECTIONS) {
                 uint64_t piece = 1ULL << square;
 
                 // Check if current position is on edge before moving
@@ -237,11 +230,10 @@ uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t en
 uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enemy_pieces, uint64_t enemy_attacks) {
     uint64_t moves = 0;
     uint64_t availableSquares = empty_squares | enemy_pieces;
-    const int KING_DIRS[] = {NORTH, SOUTH, EAST, WEST, NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
     
     for (int square = 0; square < 64; square++) {
         if (kings & (1ULL << square)) {
-            for (int dir : KING_DIRS) {
+            for (int dir : KING_DIRECTIONS) {
                 uint64_t piece = 1ULL << square;
 
                 // Check if current position is on edge before moving
