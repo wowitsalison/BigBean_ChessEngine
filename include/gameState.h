@@ -27,11 +27,13 @@ struct GameState {
     bool isCheckmate();
     bool isStalemate();
 
+    std::vector<Move> generateLegalMoves();
+
 private:
     void updateCastlingRights(const Move& move);
     void updateEnPassantSquare(const Move& move);
     void updateCastlingRightsUndo(const Move& move);
     void updateEnPassantSquareUndo(const Move& move);
 
-    std::vector<Move> generateLegalMoves();
+    
 };
