@@ -15,6 +15,7 @@ set(SOURCES
     src/utils.cpp
     src/gameState.cpp
     src/evaluation.cpp
+    src/search.cpp
 )
 
 # Add the test files
