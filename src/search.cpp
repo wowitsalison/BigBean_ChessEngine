@@ -1,34 +1,35 @@
 #include <iostream>
 #include "search.h"
-#include "movegen.h"
 
 MoveEval minimax(GameState gs, int depth, bool maximizingPlayer) {
-    if (depth == 0) return gs.board.evaluate();
+    // Base case: evaluate the board
+    if (depth == 0) return {Move(), gs.board.evaluate()};
 
+    // Get a list of all the legal moves
     std::vector<Move> legalMoves = gs.generateLegalMoves();
 
+    // Handle end-of-game positions
     if (legalMoves.empty()) {
-        if (gs.isCheckmate()) return maximizingPlayer ? -100000 : 100000;
-        if (gs.isStalemate()) return 0;
+        int eval = 0;
+        if (gs.isCheckmate()) eval = maximizingPlayer ? -100000 : 100000;
+        if (gs.isStalemate()) eval = 0;
+        return {Move(), eval};
     }
 
-    if (maximizingPlayer) {
-        int maxEval = -100000;
-        for (const Move& move : legalMoves) {
-            gs.makeMove(move);
-            int eval = minimax(gs, depth - 1, false);
-            gs.undoMove();
-            maxEval = std::max(maxEval, eval);
+    Move bestMove;
+    int bestEval = maximizingPlayer ? -100000 : 100000;
+
+    // Loop through all legal moves to find the best one
+    for (const Move& move : legalMoves) {
+        gs.makeMove(move);
+        int eval = minimax(gs, depth - 1, !maximizingPlayer).eval;
+        gs.undoMove();
+
+        if ((maximizingPlayer && eval > bestEval) || (!maximizingPlayer && eval < bestEval)) {
+            bestEval = eval;
+            bestMove = move;
         }
-        return maxEval;
-    } else {
-        int minEval = 100000;
-        for (const Move& move : legalMoves) {
-            gs.makeMove(move);
-            int eval = minimax(gs, depth - 1, true);
-            gs.undoMove();
-            minEval = std::min(minEval, eval);
-        }
-        return minEval;
     }
+
+    return {bestMove, bestEval};
 }
