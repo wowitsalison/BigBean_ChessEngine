@@ -51,4 +51,4 @@ uint64_t generateKingAttacks(uint64_t king);
 uint64_t generateSlidingAttacks(int square, uint64_t allPieces, const int directions[]);
 
 std::vector<Move> generateAllMoves(const Board& board, Side side);
-std::vector<Move> bitboardToMoves(uint64_t fromPieces, uint64_t toSquares, char piece);
+std::vector<Move> bitboardToAlgebraicMoves(uint64_t fromPieces, uint64_t toSquares, char piece);
