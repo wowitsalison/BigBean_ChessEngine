@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
+#include <cstdint>
 
 int algebraicToSquare(const std::string& algebraic) {
     // Check for valid algebraic notation
