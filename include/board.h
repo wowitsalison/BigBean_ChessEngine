@@ -45,8 +45,8 @@ public:
     double evaluate() const;
     int materialEvaluation() const;
     int positionalEvaluation() const;
-    uint64_t Board::getWhiteAttacks() const;
-    uint64_t Board::getBlackAttacks() const;
+    uint64_t getWhiteAttacks() const;
+    uint64_t getBlackAttacks() const;
 };
 
 // Board masks
