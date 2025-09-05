@@ -1,7 +1,8 @@
 #include <iostream>
 #include "search.h"
+#include "movegen.h"
 
-int minimax(GameState gs, int depth, bool maximizingPlayer) {
+MoveEval minimax(GameState gs, int depth, bool maximizingPlayer) {
     if (depth == 0) return gs.board.evaluate();
 
     std::vector<Move> legalMoves = gs.generateLegalMoves();
