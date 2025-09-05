@@ -1,3 +1,8 @@
 #include "gameState.h"
 
-int minimax(GameState gs, int depth, bool maximizingPlayer);
+struct MoveEval {
+    Move bestMove;
+    int eval;
+};
+
+MoveEval minimax(GameState gs, int depth, bool maximizingPlayer);
