@@ -1,6 +1,7 @@
 #pragma once
 #include "board.h"
 #include <cstdint>
+#include <vector>
 
 // Direction constants for sliding pieces
 const int NORTH = -8;
