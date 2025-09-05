@@ -14,6 +14,12 @@ struct Move {
     uint8_t previousCastlingRights;
     int previousEnPassantSquare;
 
+    // Default Move (no move)
+    Move()
+        : piece('\0'), sourceSquare(-1), destinationSquare(-1),
+          isCastling(false), isEnPassant(false), promotionPiece('\0'),
+          previousCastlingRights(0), previousEnPassantSquare(-1) {}
+
     Move(char p, int src, int dest, bool castling = false, bool enPassant = false, char promo = '\0')
         : piece(p), sourceSquare(src), destinationSquare(dest), 
           isCastling(castling), isEnPassant(enPassant), promotionPiece(promo),
