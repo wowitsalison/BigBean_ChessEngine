@@ -10,19 +10,19 @@ MoveEval minimax(GameState gs, int depth, bool maximizingPlayer) {
 
     // Handle end-of-game positions
     if (legalMoves.empty()) {
-        int eval = 0;
+        double eval = 0;
         if (gs.isCheckmate()) eval = maximizingPlayer ? -100000 : 100000;
         if (gs.isStalemate()) eval = 0;
         return {Move(), eval};
     }
 
     Move bestMove;
-    int bestEval = maximizingPlayer ? -100000 : 100000;
+    double bestEval = maximizingPlayer ? -100000 : 100000;
 
     // Loop through all legal moves to find the best one
     for (const Move& move : legalMoves) {
         gs.makeMove(move);
-        int eval = minimax(gs, depth - 1, !maximizingPlayer).eval;
+        double eval = minimax(gs, depth - 1, !maximizingPlayer).eval;
         gs.undoMove();
 
         if ((maximizingPlayer && eval > bestEval) || (!maximizingPlayer && eval < bestEval)) {

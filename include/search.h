@@ -2,7 +2,7 @@
 
 struct MoveEval {
     Move bestMove;
-    int eval;
+    double eval;
 };
 
 MoveEval minimax(GameState gs, int depth, bool maximizingPlayer);
