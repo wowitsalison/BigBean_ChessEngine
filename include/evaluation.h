@@ -29,4 +29,4 @@ const int ROOK_OPEN_FILE_BONUS = 25;    // Bonus for rooks on open files
 
 // Important bitboards
 const uint64_t CENTER_SQUARES = (1ULL << 27) | (1ULL << 28) | (1ULL << 35) | (1ULL << 36);  // d4, e4, d5, e5
-const int ADJACENT_SQUARES[] = {1, 7, 8, 9, -1, -7, -8, -9}; // 8 squares around the king
+const int ADJACENT_SQUARES[] = {1, 7, 8, 9, -1, -7, -8, -9}; // 8 squares around the kings
