@@ -8,11 +8,11 @@ uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isW
     uint64_t move = 0;
     if (isWhite) {
         move = (pawns >> 8) & empty_squares;
-        logMoves(move);
+        //logMoves(move);
         return move;
     } else {
         move = (pawns << 8) & empty_squares;
-        logMoves(move);
+        //logMoves(move);
         return move;
     }
 }
@@ -23,12 +23,12 @@ uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isW
     if (isWhite) {
         uint64_t singlePush = generatePawnSinglePush(pawns, empty_squares, true);
         moves = (singlePush >> 8) & empty_squares & 0x000000FF00000000ULL; // Ranks 2 - 4;
-        logMoves(moves);
+        //logMoves(moves);
         return moves;
     } else {
         uint64_t singlePush = generatePawnSinglePush(pawns, empty_squares, false);
         moves = (singlePush << 8) & empty_squares & 0x00000000FF000000ULL; // Ranks 5 - 7
-        logMoves(moves);
+        //logMoves(moves);
         return moves;
     }
 }
@@ -40,13 +40,13 @@ uint64_t generatePawnCaptures(uint64_t pawns, uint64_t enemy_peices, bool isWhit
         uint64_t leftCapture = (pawns >> 7) & ~FILE_A & enemy_peices;
         uint64_t rightCapture = (pawns >> 9) & ~FILE_H & enemy_peices;
         move = leftCapture | rightCapture;
-        logMoves(move);
+        //logMoves(move);
         return move;
     } else {
         uint64_t leftCapture = (pawns << 9) & ~FILE_H & enemy_peices;
         uint64_t rightCapture = (pawns << 7) & ~FILE_A & enemy_peices;
         move = leftCapture | rightCapture;
-        logMoves(move);
+        //logMoves(move);
         return move;
     }
 }
@@ -95,7 +95,7 @@ uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t 
         }
     }
 
-    logMoves(moves); // Log moves in algebraic notation
+    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -131,7 +131,7 @@ uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t 
             }
         }
     }
-    logMoves(moves); // Log moves in algebraic notation
+    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -175,7 +175,7 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
             }
         }
     }
-    logMoves(moves); // Log moves in algebraic notation
+    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -222,7 +222,7 @@ uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t en
             }
         }
     }
-    logMoves(moves); // Log moves in algebraic notation
+    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -254,7 +254,7 @@ uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enem
             }
         }
     }
-    logMoves(moves); // Log moves in algebraic notation
+    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
