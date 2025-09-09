@@ -35,6 +35,9 @@ private:
                     moveEval.bestMove.sourceSquare == expectedMove.sourceSquare &&
                     moveEval.bestMove.destinationSquare == expectedMove.destinationSquare);
 
+        std::cout << "\nBest move found: ";
+        printMove(moveEval.bestMove);
+
         printTestResult("\nOne legal move test", passed);
         return passed;
     }
