@@ -143,6 +143,8 @@ private:
         // Move pawn to 8th rank
         Move move('P', algebraicToSquare("h7"), algebraicToSquare("h8"), false, false, 'N');
 
+        std::cout << "\nTesting pawn promotion: " << std::endl;
+
         gs.makeMove(move);
 
         passed &= (gs.board.getPiece(algebraicToSquare("h8")) == 'N');
@@ -212,6 +214,20 @@ private:
         return true;
     }
 
+    bool testCheck() {
+        gs.initialize("rnbqk2r/ppp4p/7n/4p1p1/1bpPP3/N4P2/PP2BNPP/R2QKR2 w Qkq - 2 11");
+
+        std::cout << "\nTesting check detection:" << std::endl;
+        bool inCheck = gs.isCheck();
+        std::cout << "White in check: " << (inCheck ? "Yes" : "No") << std::endl;
+
+        bool passed = true;
+        passed &= (inCheck == true);
+
+        printTestResult("\nOne legal move test", passed);
+        return passed;
+    }
+
 public:
     void runAllTests() {
         std::cout << "Running chess engine tests...\n" << std::endl;
@@ -224,8 +240,14 @@ public:
         allPassed &= testPawnPromotion();
         allPassed &= testMoveHistory();
         allPassed &= testBoardVisualization();
+        allPassed &= testCheck();
         
         std::cout << "\nOverall test result: " << (allPassed ? "ALL PASSED" : "SOME FAILED") << std::endl;
+    }
+
+    void runCheckTest() {
+        bool passed = testCheck();
+        std::cout << "\nCheck test result: " << (passed ? "PASSED" : "FAILED") << std::endl;
     }
 };
 
