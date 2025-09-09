@@ -326,8 +326,9 @@ uint64_t generateSlidingAttacks(int square, uint64_t allPieces, const int direct
         uint64_t piece = 1ULL << square;
         while (piece) {
             piece = (directions[dir] > 0) ? (piece << directions[dir]) : (piece >> -directions[dir]);
-            if (piece & allPieces) break;
+            if (piece == 0) break;
             attacks |= piece;
+            if (piece & allPieces) break; // Add attacked square, then break
         }
     }
     return attacks;
