@@ -23,8 +23,9 @@ private:
         gs.initialize("rnbqk2r/ppp4p/7n/4p1p1/1bpPP3/N4P2/PP2BNPP/R2QKR2 w Qkq - 2 11");
 
         // Run minimax
-        MoveEval moveEval = minimax(gs, 2, true);
-        std::cout << "\nEvaluating position...\n";
+        MoveEval moveEval = minimax(gs, 1, true);
+        std::cout << "\nEvaluating position:\n";
+        gs.board.print();
         
         // Only legal move
         Move expectedMove('Q', 59, 51);
@@ -42,12 +43,38 @@ private:
         return passed;
     }
 
+    bool testObviousMove() {
+        // Initialize position with position with obvious best move
+        gs.initialize("rn2kb1r/p3qppp/5n2/1p2p1B1/2B1P3/1Q6/PPP2PPP/R3K2R w KQkq - 0 11");
+
+        // Run minimax
+        MoveEval moveEval = minimax(gs, 3, true);
+        std::cout << "\nEvaluating position:\n";
+        gs.board.print();
+
+        // Obvious best move
+        Move expectedMove('B', 34, 25); // Bc4xf7+
+
+        // Compare output with best move
+        bool passed = true;
+        passed &= (moveEval.bestMove.piece == expectedMove.piece &&
+                    moveEval.bestMove.sourceSquare == expectedMove.sourceSquare &&
+                    moveEval.bestMove.destinationSquare == expectedMove.destinationSquare);
+        
+        std::cout << "\nBest move found: ";
+        printMove(moveEval.bestMove);
+
+        printTestResult("\nObvious best move test", passed);
+        return passed;
+    }
+
 public:
     void runCombinedTests() {
         std::cout << "Running chess engine tests...\n" << std::endl;
 
         bool allPassed = true;
         allPassed &= testOneLegalMove();
+        allPassed &= testObviousMove();
         
         std::cout << "\nOverall test result: " << (allPassed ? "ALL PASSED" : "SOME FAILED") << std::endl;
     }
