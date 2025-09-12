@@ -203,15 +203,6 @@ std::vector<Move> GameState::generateLegalMoves() {
         makeMove(move);
         // Set back to moving side to evaluate check
         sideToMove = movingSide; 
-
-        //  --------------- DEBUGGING OUTPUT ----------------
-        std::cout << "\nTesting move: " << move.piece << squareToAlgebraic(move.destinationSquare) << ", " << move.destinationSquare << ", Check: " << isCheck() << std::endl;
-        std::cout << "Board after move:" << std::endl;
-        board.print();
-        std::cout << "Bishop attacks:" << std::endl;
-        logMoves(generateBishopMoves(0x200000000ULL, ~board.allPieces, board.whitePieces));
-        // --------------- END DEBUGGING OUTPUT ---------------
-
         if (!isCheck()) {
             // Add to list of legal moves if not in check
             legalMoves.push_back(move);
