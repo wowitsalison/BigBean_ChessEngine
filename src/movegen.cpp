@@ -8,11 +8,9 @@ uint64_t generatePawnSinglePush(uint64_t pawns, uint64_t empty_squares, bool isW
     uint64_t move = 0;
     if (isWhite) {
         move = (pawns >> 8) & empty_squares;
-        //logMoves(move);
         return move;
     } else {
         move = (pawns << 8) & empty_squares;
-        //logMoves(move);
         return move;
     }
 }
@@ -23,12 +21,10 @@ uint64_t generatePawnDoublePush(uint64_t pawns, uint64_t empty_squares, bool isW
     if (isWhite) {
         uint64_t singlePush = generatePawnSinglePush(pawns, empty_squares, true);
         moves = (singlePush >> 8) & empty_squares & 0x000000FF00000000ULL; // Ranks 2 - 4;
-        //logMoves(moves);
         return moves;
     } else {
         uint64_t singlePush = generatePawnSinglePush(pawns, empty_squares, false);
         moves = (singlePush << 8) & empty_squares & 0x00000000FF000000ULL; // Ranks 5 - 7
-        //logMoves(moves);
         return moves;
     }
 }
@@ -40,13 +36,11 @@ uint64_t generatePawnCaptures(uint64_t pawns, uint64_t enemy_peices, bool isWhit
         uint64_t leftCapture = (pawns >> 7) & ~FILE_A & enemy_peices;
         uint64_t rightCapture = (pawns >> 9) & ~FILE_H & enemy_peices;
         move = leftCapture | rightCapture;
-        //logMoves(move);
         return move;
     } else {
         uint64_t leftCapture = (pawns << 9) & ~FILE_H & enemy_peices;
         uint64_t rightCapture = (pawns << 7) & ~FILE_A & enemy_peices;
         move = leftCapture | rightCapture;
-        //logMoves(move);
         return move;
     }
 }
@@ -95,7 +89,6 @@ uint64_t generateBishopMoves(uint64_t bishops, uint64_t empty_squares, uint64_t 
         }
     }
 
-    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -131,7 +124,6 @@ uint64_t generateKnightMoves(uint64_t knights, uint64_t empty_squares, uint64_t 
             }
         }
     }
-    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -175,7 +167,6 @@ uint64_t generateRookMoves(uint64_t rooks, uint64_t empty_squares, uint64_t enem
             }
         }
     }
-    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -222,7 +213,6 @@ uint64_t generateQueenMoves(uint64_t queens, uint64_t empty_squares, uint64_t en
             }
         }
     }
-    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -254,7 +244,6 @@ uint64_t generateKingMoves(uint64_t kings, uint64_t empty_squares, uint64_t enem
             }
         }
     }
-    //logMoves(moves); // Log moves in algebraic notation
     return moves;
 }
 
@@ -328,7 +317,8 @@ uint64_t generateSlidingAttacks(int square, uint64_t allPieces, const int direct
             piece = (directions[dir] > 0) ? (piece << directions[dir]) : (piece >> -directions[dir]);
             if (piece == 0) break;
             attacks |= piece;
-            if (piece & allPieces) break; // Add attacked square, then break
+            // Add attacked square, then break if occupied
+            if (piece & allPieces) break;
         }
     }
     return attacks;
@@ -390,17 +380,23 @@ std::vector<Move> generateAllMoves(const Board& board, Side side) {
 std::vector<Move> bitboardToAlgebraicMoves(uint64_t fromPieces, uint64_t toSquares, char piece) {
     std::vector<Move> moves;
     while (fromPieces) {
-        int from = __builtin_ctzll(fromPieces);  // Get source square
-        uint64_t toMask = toSquares & ~(toSquares - 1); // Get each destination one by one
+        // Get source square
+        int from = __builtin_ctzll(fromPieces);
+        // Get each destination one by one
+        uint64_t toMask = toSquares & ~(toSquares - 1);
         while (toMask) {
-            int to = __builtin_ctzll(toMask);  // Get destination square
+            // Get desination square
+            int to = __builtin_ctzll(toMask);
             std::string fromAlgebraic = squareToAlgebraic(from);
             std::string toAlgebraic = squareToAlgebraic(to);
-            moves.push_back(Move(piece, from, to));  // Store as Move object
-            toSquares &= ~toMask; // Remove processed move
+            // Store as Move object
+            moves.push_back(Move(piece, from, to));
+            // Remove processed move
+            toSquares &= ~toMask;
             toMask = toSquares & ~(toSquares - 1);
         }
-        fromPieces &= fromPieces - 1;  // Remove processed piece
+        // Removed processed piece
+        fromPieces &= fromPieces - 1;
     }
     return moves;
 }
