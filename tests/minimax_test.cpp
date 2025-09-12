@@ -53,7 +53,7 @@ private:
         gs.board.print();
 
         // Obvious best move
-        Move expectedMove('B', 34, 25); // Bc4xf7+
+        Move expectedMove('B', 34, 25); // Bc4xb5+
 
         // Compare output with best move
         bool passed = true;
