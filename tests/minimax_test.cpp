@@ -24,7 +24,26 @@ private:
 
         // Run minimax
         MoveEval moveEval = minimax(gs, 2, true);
-        std::cout << "\nEvaluating position:";
+        std::cout << "\nEvaluating position:\n";
+
+        // Print the board to compare
+        gs.board.print();
+
+        // Print bishop attacks
+        std::cout << "Black bishop attacks from b4:" << std::endl;
+        logMoves(generateBishopMoves(0x200000000ULL, ~gs.board.allPieces, gs.board.whitePieces));
+
+        // Check for check - should say yes
+        bool inCheck = gs.isCheck();
+        std::cout << "\nWhite in check: " << (inCheck ? "Yes" : "No") << std::endl;
+        assert(inCheck == true);
+
+        // Print all legal moves
+        std::vector<Move> legalMoves = gs.generateLegalMoves();
+        std::cout << "\nAll legal moves:" << std::endl;
+        for (const Move& move : legalMoves) {
+            printMove(move);
+        }
 
         // Only legal move
         Move expectedMove('Q', 59, 51);
