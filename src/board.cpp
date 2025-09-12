@@ -66,6 +66,16 @@ void Board::makeMove(const Move& move) {
     else if (blackQueens & sourceMask) { blackQueens &= ~sourceMask; blackQueens |= destMask; }
     else if (whiteKings & sourceMask) { whiteKings &= ~sourceMask; whiteKings |= destMask; }
     else if (blackKings & sourceMask) { blackKings &= ~sourceMask; blackKings |= destMask; }
+
+    // Update agregate bitboards
+    pawns = whitePawns | blackPawns;
+    bishops = whiteBishops | blackBishops;
+    knights = whiteKnights | blackKnights;
+    rooks = whiteRooks | blackRooks;
+    queens = whiteQueens | blackQueens;
+    whitePieces = whitePawns | whiteBishops | whiteKnights | whiteRooks | whiteQueens | whiteKings;
+    blackPieces = blackPawns | blackBishops | blackKnights | blackRooks | blackQueens | blackKings;
+    allPieces = whitePieces | blackPieces;
 }
 
 void Board::undoMove(const Move& move) {
