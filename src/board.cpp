@@ -25,7 +25,9 @@ void Board::initialize(const std::string& fen) {
             // Ignore slashes
             continue; 
         } else {
+            // Create a bitmask for square and shift 1 to the left
             uint64_t mask = (1ULL << square);
+            // Set the appropriate piece bitboard
             if (c == 'P') whitePawns |= mask;
             else if (c == 'p') blackPawns |= mask;
             else if (c == 'N') whiteKnights |= mask;
@@ -41,6 +43,8 @@ void Board::initialize(const std::string& fen) {
             square++;
         }
     }
+    
+    // Update aggregate bitboards
     pawns = whitePawns | blackPawns;
     bishops = whiteBishops | blackBishops;
     knights = whiteKnights | blackKnights;
@@ -54,6 +58,7 @@ void Board::initialize(const std::string& fen) {
 
 // Update the board by making a move
 void Board::makeMove(const Move& move) {
+    // Create bitmasks for source and destination squares
     uint64_t sourceMask = 1ULL << move.sourceSquare;
     uint64_t destMask = 1ULL << move.destinationSquare;
 
@@ -77,12 +82,14 @@ void Board::makeMove(const Move& move) {
     knights = whiteKnights | blackKnights;
     rooks = whiteRooks | blackRooks;
     queens = whiteQueens | blackQueens;
+
     whitePieces = whitePawns | whiteBishops | whiteKnights | whiteRooks | whiteQueens | whiteKings;
     blackPieces = blackPawns | blackBishops | blackKnights | blackRooks | blackQueens | blackKings;
     allPieces = whitePieces | blackPieces;
 }
 
 void Board::undoMove(const Move& move) {
+    // Create bitmasks for source and destination squares
     uint64_t sourceMask = 1ULL << move.sourceSquare;
     uint64_t destMask = 1ULL << move.destinationSquare;
 
@@ -99,6 +106,17 @@ void Board::undoMove(const Move& move) {
     else if (blackQueens & destMask) { blackQueens &= ~destMask; blackQueens |= sourceMask; }
     else if (whiteKings & destMask) { whiteKings &= ~destMask; whiteKings |= sourceMask; }
     else if (blackKings & destMask) { blackKings &= ~destMask; blackKings |= sourceMask; }
+
+    // Update agregate bitboards
+    pawns = whitePawns | blackPawns;
+    bishops = whiteBishops | blackBishops;
+    knights = whiteKnights | blackKnights;
+    rooks = whiteRooks | blackRooks;
+    queens = whiteQueens | blackQueens;
+    
+    whitePieces = whitePawns | whiteBishops | whiteKnights | whiteRooks | whiteQueens | whiteKings;
+    blackPieces = blackPawns | blackBishops | blackKnights | blackRooks | blackQueens | blackKings;
+    allPieces = whitePieces | blackPieces;
 }
 
 // Print board in human-readable format
@@ -107,6 +125,7 @@ void Board::print() const {
     for (int rank = 7; rank >= 0; rank--) {  
         for (int file = 0; file < 8; file++) {
             int square = ((7 - rank) * 8) + file;
+            // Create a bitmask for the square
             uint64_t mask = 1ULL << square;
 
             if (whitePawns & mask) std::cout << "P ";
@@ -132,6 +151,7 @@ void Board::print() const {
 
 // Get any piece at its square
 char Board::getPiece(int square) const {
+    // Create a bitmask for the square
     uint64_t mask = 1ULL << square;
     if (whitePawns & mask) return 'P';
     if (blackPawns & mask) return 'p';
@@ -149,6 +169,7 @@ char Board::getPiece(int square) const {
     return '.';
 }
 
+// Generate an aggregate attack bitboard for white pieces
 uint64_t Board::getWhiteAttacks() const {
     uint64_t attacks = 0;
     attacks |= generatePawnAttacks(whitePawns, WHITE);
@@ -160,6 +181,7 @@ uint64_t Board::getWhiteAttacks() const {
     return attacks;
 }
 
+// Generate an aggregate attack bitboard for black pieces
 uint64_t Board::getBlackAttacks() const {
     uint64_t attacks = 0;
     attacks |= generatePawnAttacks(blackPawns, BLACK);
