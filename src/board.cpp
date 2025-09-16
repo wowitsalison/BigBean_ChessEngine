@@ -12,14 +12,18 @@ void Board::initialize(const std::string& fen) {
     whiteQueens = blackQueens = 0;
     whiteKings = blackKings = 0;
 
-    int square = 0;  // Start at a8 (square 0)
+    // Start at a8 (square 0)
+    int square = 0;  
     for (char c : fen) {
-        if (c == ' ') break;  // Stop at board description end
+        // Stop at board description end
+        if (c == ' ') break;  
 
         if (isdigit(c)) {
-            square += (c - '0');  // Skip empty squares
+            // Skip empty squares
+            square += (c - '0');  
         } else if (c == '/') {
-            continue; // Ignore slashes
+            // Ignore slashes
+            continue; 
         } else {
             uint64_t mask = (1ULL << square);
             if (c == 'P') whitePawns |= mask;
@@ -99,7 +103,8 @@ void Board::undoMove(const Move& move) {
 
 // Print board in human-readable format
 void Board::print() const {
-    for (int rank = 7; rank >= 0; rank--) {  // Print from rank 8 to rank 1
+    // Print from rank 8 to rank 1
+    for (int rank = 7; rank >= 0; rank--) {  
         for (int file = 0; file < 8; file++) {
             int square = ((7 - rank) * 8) + file;
             uint64_t mask = 1ULL << square;

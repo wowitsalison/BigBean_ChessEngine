@@ -22,7 +22,9 @@ MoveEval minimax(GameState gs, int depth, bool maximizingPlayer) {
     // Loop through all legal moves to find the best one
     for (const Move& move : legalMoves) {
         gs.makeMove(move);
+        std::cout << "Evaluating move: " << move.piece << squareToAlgebraic(move.destinationSquare);
         double eval = minimax(gs, depth - 1, !maximizingPlayer).eval;
+        std::cout << ", Eval: " << eval << std::endl;
         gs.undoMove();
 
         if ((maximizingPlayer && eval > bestEval) || (!maximizingPlayer && eval < bestEval)) {

@@ -338,7 +338,6 @@ std::vector<Move> generateAllMoves(const Board& board, Side side) {
     uint64_t doublePushes = generatePawnDoublePush(pawns, emptySquares, isWhite);
     uint64_t captures = generatePawnCaptures(pawns, enemyPieces, isWhite);
 
-    // Correct insert usage
     std::vector<Move> pawnMoves = bitboardToAlgebraicMoves(pawns, singlePushes, 'P');
     moves.insert(moves.end(), pawnMoves.begin(), pawnMoves.end());
 

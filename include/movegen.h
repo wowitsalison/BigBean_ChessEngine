@@ -15,13 +15,13 @@ const int NORTHWEST = -9;
 
 // Direction constants for knight moves
 const int NORTHEAST_L = -15; // Two squares north, one square east
-const int EASTNORTH_L = -6; // Two squares east, one square north
-const int EASTSOUTH_L = 10; // Two squares east, one square south
-const int SOUTHEAST_L = 17;
-const int SOUTHWEST_L = 15;
-const int WESTSOUTH_L = 6;
-const int WESTNORTH_L = -10;
-const int NORTHWEST_L = -17;
+const int EASTNORTH_L = -6;  // Two squares east, one square north
+const int EASTSOUTH_L = 10;  // Two squares east, one square south
+const int SOUTHEAST_L = 17;  // Two squares south, one square east
+const int SOUTHWEST_L = 15;  // Two squares south, one square west
+const int WESTSOUTH_L = 6;   // Two squares west, one square south
+const int WESTNORTH_L = -10; // Two squares west, one square north
+const int NORTHWEST_L = -17; // Two squares north, one square west
 
 const int BISHOP_DIRECTIONS[] = {NORTHEAST, SOUTHEAST, SOUTHWEST, NORTHWEST};
 const int KNIGHT_DIRECTIONS[] = {NORTHEAST_L, EASTNORTH_L, EASTSOUTH_L, SOUTHEAST_L, SOUTHWEST_L, WESTSOUTH_L, WESTNORTH_L, NORTHWEST_L};
